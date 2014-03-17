@@ -36,7 +36,7 @@ Requirements
 ------------------
 1. Storage:
     * Raw video take an enormous amount of space! (eg: 1 second of raw 1080p50
-      YUV420: $1920 \times 1080 \times 3/2 \times 50 B ~= 148$ MB).
+      YUV420: 1920 ⨯ 1080 ⨯ 3/2 ⨯ 50 B ~= 148 MB).
     * Need to use lossless compression, but slaves need to be able to handle 5
       seconds of raw video for each core.
     * 8 core slave: 6GB of temporary space needed.
