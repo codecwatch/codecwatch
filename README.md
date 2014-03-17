@@ -1,4 +1,4 @@
-A video encoding benchmark platform "Open Source YouTube"
+A video encoding benchmark platform
 ==================
 
 Amazon EC2 instances
@@ -44,3 +44,20 @@ Requirements
    have slaves free for manual encodes, we need at least 3 slaves: at 0.02 fps,
    encoding 5 seconds will take 7 hours. If we have 20 cores available, can run
    20 encodings
+
+Team roles:
+------------------
+* Video pipeline handling: Guillaume Martres, …
+* Backend: Axel Angel, …
+* Frontend: Luca La Spada, …
+
+Deliverables
+------------------
+* April 7:
+  * A set of standard videos is encoded periodically using x264, x265, kvazaar and libvpx by the backend.
+  * The frontend can display simple stats like http://arewefastyet.com .
+* April 28:
+  * Support for user accounts which can trigger a set of encodes using an encoder built from their git branch.
+* May 13:
+  * Users can upload new videos.
+  * The frontend can be used to download/stream the videos and to compare them like http://exp.martres.me/splitview/ .
