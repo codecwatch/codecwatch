@@ -54,10 +54,10 @@ Team roles:
 Deliverables
 ------------------
 * April 7:
-  * A set of standard videos is encoded periodically using x264, x265, kvazaar and libvpx by the backend.
-  * The frontend can display simple stats like http://arewefastyet.com .
+  * Axel and Guillaume: A set of standard videos is encoded periodically using x264, x265, kvazaar and libvpx by the backend
+  * Luca: The frontend can display simple stats like http://arewefastyet.com (work done by Luca).
 * April 28:
-  * Support for user accounts which can trigger a set of encodes using an encoder built from their git branch.
+  * Everyone: Support for user accounts which can trigger a set of encodes using an encoder built from their git branch.
 * May 13:
-  * Users can upload new videos.
-  * The frontend can be used to download/stream the videos and to compare them like http://exp.martres.me/splitview/ .
+  * Everyone: Users can upload new videos.
+  * Luca: The frontend can be used to download/stream the videos and to compare them like http://exp.martres.me/splitview/ .
