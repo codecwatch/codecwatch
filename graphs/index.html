@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CodecWatch graphs</title>
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/g/bootstrap@3.1(css/bootstrap.min.css+css/bootstrap-theme.min.css)">
+    <link rel="stylesheet" href="./main.css">
+    <script src="http://cdn.jsdelivr.net/g/jquery@1.11,bootstrap@3.1"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="page-header text-center">
+        <h1>CodecWatch graphs</h1>
+      </div>
+      <div id="main">
+        <strong>DateTime:</strong>
+        <input type="date" id="dateInput" value="2014-04-04T12:42:01Z">
+        <br>
+        <strong>Sample:</strong>
+        <select id="sampleSelector">
+          <option>fileA.mp4</option>
+          <option>fileB.mp4</option>
+        </select>
+        <br>
+        <strong>Metrics:</strong>
+        <select id="metricSelector">
+          <option>PSNR</option>
+          <option>SSIM</option>
+        </select>
+      </div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+CodecWatch Graphs requirements, first version:
+- Build an interface similar to http://areweslimyet.com for displaying video
+  quality measurements, probably using the same library: http://www.flotcharts.org/
+- Graph should have bitrate (in kb/s) on the x-axis and quality (in decibels) on the y-axis.
+- The input format could be something like this:
+var input = [
+    {
+        "encoder": "x264",
+        "sample": "fileA.mp4",
+        "datetime": "2014-04-04T12:42:01Z",
+        "type": "PSNR",
+        "value": "46.45232dB",
+        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
+     },
+     // ...
+];
+- Using input elements, the user can choose which file, which encoder, etc will be used for comparisons
+- Initially, we will support two types of graphs:
+  * Graphs where the datetime is fixed and there's a line for each different encoder.
+  * Graphs where the encoder is fixed and there's a line for each datetime.
+- When clicking on a point in the graph, the following informations should be displayed:
+  * Encoder used
+  * Exact quality in dB
+  * Git revision of the encoder used, with a link to the git commit message
+  * Date corresponding to the git revision
