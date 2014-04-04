@@ -14,39 +14,30 @@
       <div class="page-header text-center">
         <h1>CodecWatch graphs</h1>
       </div>
-      <div id="main">
-        <strong>DateTime:</strong>
-        <input type="date" id="dateInput" value="2014-04-04T12:42:01Z">
-        <br>
-        <strong>Sample:</strong>
-        <select id="sampleSelector">
-          <option>fileA.mp4</option>
-          <option>fileB.mp4</option>
-        </select>
-        <br>
-        <strong>Metrics:</strong>
-        <select id="metricSelector">
-          <option>PSNR</option>
-          <option>SSIM</option>
-        </select>
-		<div class="content">
-
+      <strong>DateTime:</strong>
+      <input type="date" id="dateInput" value="2014-04-04T12:42:01Z">
+      <br>
+      <strong>Sample:</strong>
+      <select id="sampleSelector">
+        <option>fileA.mp4</option>
+        <option>fileB.mp4</option>
+      </select>
+      <br>
+      <strong>Metrics:</strong>
+      <select id="metricSelector">
+        <option>PSNR</option>
+        <option>SSIM</option>
+      </select>
+	  <div id="content">
+		<div class="graph-container">
+		  <div id="placeholder1" class="graph-placeholder"></div>
 		</div>
-
-      </div>
+        <!--
+		    <div class="graph-container">
+			  <div id="placeholder2" class="graph-placeholder"></div>
+		    </div> -->
+	  </div>
+	  <script src="./main.js"></script>
     </div>
-
-	<div id="content">
-
-		<div class="graph-container">
-			<div id="placeholder1" class="graph-placeholder"></div>
-		</div>
-<!--
-		<div class="graph-container">
-			<div id="placeholder2" class="graph-placeholder"></div>
-		</div> -->
-
-	</div>
-	<script src="./main.js"></script>
   </body>
 </html>
