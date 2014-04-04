@@ -67,7 +67,7 @@ $(function() {
 		"value": "-6dB",
 		"gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
 	 }]
-	 
+
 	//http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
 	//Create a table of tuple (x,y) for each encoder type
 	var xyEncoder = new Object();
@@ -77,7 +77,7 @@ $(function() {
 		}
 		xyEncoder[input[i].encoder].push([Date.parse(input[i].datetime), input[i].value.replace("dB", "") , {"sample": input[i].sample, "type": input[i].type, "gitrev": input[i].gitrev}]);
 	}
-	
+
 	//Create the dataset for the plot
 	var dataset = [];
 	for(key in xyEncoder)
@@ -104,7 +104,7 @@ $(function() {
 			timeformat: "%Y/%M/%d %H:%M:%S"
 		}
 	});
-	
+
 	//Design of the tooltip
 	$("<div id='tooltip1'></div>").css({
 		position: "absolute",
