@@ -79,11 +79,16 @@ $(function() {
 	//http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
 	//Create a table of tuple (x,y) for each encoder type
 	var xyEncoder = new Object();
+	var key;
+	var entry;
 	for (var i = 0; i < input.length; i++) {
-		if( !(input[i].encoder in xyEncoder)) {
-			xyEncoder[input[i].encoder] = []
+		entry = input[i];
+		key = entry.encoder + " (" + entry.datetime + ") (" + entry.gitrev + ")";
+
+		if( !(key in xyEncoder)) {
+			xyEncoder[key] = []
 		}
-		xyEncoder[input[i].encoder].push([input[i].rate, input[i].value , {"sample": input[i].sample, "type": input[i].type, "gitrev": input[i].gitrev, "datetime": input[i].datetime}]);
+		xyEncoder[key].push([entry.rate, entry.value , {"encoder": entry.encoder, "sample": entry.sample, "datetime": entry.datetime, "type": entry.type, "gitrev": input[i].gitrev}]);
 	}
 
 	//Create the dataset for the plot
@@ -116,6 +121,9 @@ $(function() {
 			tickFormatter: function (v) {
 				return v + " dB";
 			}
+		},
+		legend: {
+			margin: [-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2, 0]
 		}
 	});
 
@@ -133,9 +141,6 @@ $(function() {
 	$("#placeholder1").bind("plothover", function (event, pos, item) {
 		//Show information
 		if (item) {
-			var x = item.datapoint[0].toFixed(2),
-				y = item.datapoint[1].toFixed(2);
-
 			$("#tooltip1").html(item.series.label + " at " + item.series.data[item.dataIndex][2].datetime)
 				.css({top: item.pageY+5, left: item.pageX+5})
 				.fadeIn(200);
