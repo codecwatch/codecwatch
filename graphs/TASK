@@ -7,7 +7,7 @@ var input = [
     {
         "encoder": "x264",
         "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:01Z",
+        "datetime": "2014-04-04T12:42:01Z", (iso 8601)
         "type": "PSNR",
         "value": "46.45232dB",
         "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"

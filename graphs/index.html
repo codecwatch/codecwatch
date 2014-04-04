@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CodecWatch graphs</title>
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/g/bootstrap@3.1(css/bootstrap.min.css+css/bootstrap-theme.min.css)">
-    <link rel="stylesheet" href="./main.css">
-    <script src="http://cdn.jsdelivr.net/g/jquery@1.11,bootstrap@3.1"></script>
+    <link rel="stylesheet" href="./main.css" type="text/css">
+    <script src="http://cdn.jsdelivr.net/g/jquery@1.11,bootstrap@3.1,jquery.flot@0.8(jquery.flot.min.js+jquery.flot.time.min.js)"></script> -->
+	<script src="./main.js"></script>
   </head>
   <body>
     <div class="container-fluid">
@@ -29,8 +30,25 @@
           <option>PSNR</option>
           <option>SSIM</option>
         </select>
+		<div class="content">
+		
+		</div>
+		
       </div>
     </div>
-    <script src="./main.js"></script>
+
+	<div id="content">
+
+		<div class="graph-container">
+			<div id="placeholder1" class="graph-placeholder"></div>
+		</div>
+<!-- 
+		<div class="graph-container">
+			<div id="placeholder2" class="graph-placeholder"></div>
+		</div> -->
+		
+	</div>
+
+
   </body>
 </html>
