@@ -1,9 +1,17 @@
+# run as regular user (sudo is used when needed)
+
 juju init # init config
 juju switch local # switch to local instead of amazon deploy
-sudo bootstrap --series=precise,raring --upload-tools=true # prepare env (local etc)
+mkdir ~/.juju/local/storage/tools
+juju bootstrap --series=precise,raring --upload-tools=true # prepare env (local etc)
 # precise is useful for haproxy, raring is deprecated but used for the rest
-# supposed OSCIED is already installed (following official guide)
-OSCIED/scripts/menu.sh deploy # pick: Local (to deploy, separately from juju)
+# supposed OSCIED is already installed (following official guide):
+(cd OSCIED/scripts; sh menu.sh install) # if not already done
+sudo chown -R $USER ~/.juju/environments/
+(cd OSCIED/scripts; sh menu.sh deploy) # pick: Local (to deploy, separately from juju)
+# y for first install of charms
+# y for certificate per scenario
+# replace in default s/amazon/local/ (edit scenario env)
 # no to terminate (already done)
 # y for transform (1 instance)
 # y for publisher (1 instance)
@@ -20,9 +28,31 @@ todo:
  * easy deploy
  * easy specific reploy (one charm)
 
-
+to do once:
+./menu.sh install
+./menu.sh deploy
 
 
 
 
 # custom script of OSCIED call juju inside but we could simply and deploy ourself each charms
+# Local Deployment (thesis page 92)
+juju bootstrap
+juju deploy --repository=charms/ local:quantal/oscied-orchestra
+juju deploy --repository=charms/ local:quantal/oscied-webui
+juju deploy --repository=charms/ local:quantal/oscied-storage
+juju deploy --repository=charms/ local:quantal/oscied-transform -n 3
+juju deploy --repository=charms/ local:quantal/oscied-publisher -n 2
+juju deploy cs:precise/haproxy
+juju expose oscied-storage
+juju expose oscied-orchestra
+juju expose oscied-publisher
+juju expose haproxy
+juju add-relation oscied-storage oscied-transform
+juju add-relation oscied-storage oscied-publisher
+juju add-relation oscied-storage oscied-orchestra
+juju add-relation oscied-storage oscied-webui
+juju add-relation oscied-orchestra:transform oscied-transform:transform
+juju add-relation oscied-orchestra:publisher oscied-publisher:publisher
+juju add-relation oscied-orchestra:api oscied-webui:api
+juju add-relation haproxy oscied-webui
