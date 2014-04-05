@@ -1,5 +1,8 @@
 # run as regular user (sudo is used when needed)
 
+sudo add-apt-repository ppa:juju/stable # juju repo
+# ^ this util depends on software-properties-common
+
 juju init # init config
 juju switch local # switch to local instead of amazon deploy
 mkdir ~/.juju/local/storage/tools
