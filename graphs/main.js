@@ -1,12 +1,20 @@
 "use strict;"
 
-$(function() {
+var mapEncoder = new Object();
+mapEncoder["x264"] = "https://git.videolan.org/?p=x264.git;a=commit;h=";
+mapEncoder["xTOTO"] = "https://www.google.ch/#q=";
 
+function mapEncoGitToLink(encoder, gitrev) {
+	return "<a href=" + mapEncoder[encoder]+gitrev + ">Git revison</a>"; 
+}
+
+
+$(function() {
 	var input = [
 	{
 		"encoder": "x264",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:02Z",
+		"datetime": "2014-04-04T12:42:01Z",
 		"type": "PSNR",
 		"rate": "8001.3232",
 		"value": "15",
@@ -15,7 +23,7 @@ $(function() {
 	 {
 		"encoder": "x264",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:03Z",
+		"datetime": "2014-04-04T12:42:01Z",
 		"type": "PSNR",
 		"rate": "7900.3232",
 		"value": "20",
@@ -24,7 +32,7 @@ $(function() {
 	 {
 		"encoder": "x264",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:04Z",
+		"datetime": "2014-04-04T12:42:01Z",
 		"type": "PSNR",
 		"rate": "7945.3232",
 		"value": "50",
@@ -33,7 +41,7 @@ $(function() {
 	 {
 		"encoder": "x264",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:05Z",
+		"datetime": "2014-04-04T12:42:02Z",
 		"type": "PSNR",
 		"rate": "8040.3232",
 		"value": "10",
@@ -51,7 +59,7 @@ $(function() {
 	 {
 		"encoder": "xTOTO",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:03Z",
+		"datetime": "2014-04-04T12:42:02Z",
 		"type": "PSNR",
 		"rate": "7840.3232",
 		"value": "60",
@@ -60,7 +68,7 @@ $(function() {
 	 {
 		"encoder": "xTOTO",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:04Z",
+		"datetime": "2014-04-04T12:42:02Z",
 		"type": "PSNR",
 		"rate": "8704.3232",
 		"value": "40",
@@ -69,7 +77,7 @@ $(function() {
 	 {
 		"encoder": "xTOTO",
 		"sample": "fileA.mp4",
-		"datetime": "2014-04-04T12:42:05Z",
+		"datetime": "2014-04-04T12:42:01Z",
 		"type": "PSNR",
 		"rate": "7987.3232",
 		"value": "-6",
@@ -81,14 +89,17 @@ $(function() {
 	var xyEncoder = new Object();
 	var key;
 	var entry;
+	var date;
 	for (var i = 0; i < input.length; i++) {
+		
 		entry = input[i];
-		key = entry.encoder + " (" + entry.datetime + ") (" + entry.gitrev + ")";
-
+		date = new Date(Date.parse(entry.datetime)).toUTCString();
+		key = entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
+		
 		if( !(key in xyEncoder)) {
 			xyEncoder[key] = []
 		}
-		xyEncoder[key].push([entry.rate, entry.value , {"encoder": entry.encoder, "sample": entry.sample, "datetime": entry.datetime, "type": entry.type, "gitrev": input[i].gitrev}]);
+		xyEncoder[key].push([entry.rate, entry.value , {"encoder": entry.encoder, "sample": entry.sample, "datetime": date, "type": entry.type, "gitrev": input[i].gitrev}]);
 	}
 
 	//Create the dataset for the plot
@@ -123,7 +134,7 @@ $(function() {
 			}
 		},
 		legend: {
-			margin: [-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2, 0]
+			margin: [-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2.8, 0]
 		}
 	});
 
@@ -133,19 +144,46 @@ $(function() {
 		display: "none",
 		border: "1px solid #fdd",
 		padding: "2px",
-		"background-color": "#fee",
+		color: "#fff",
+		"background-color": "#000",
 		opacity: 0.80
 	}).appendTo("body");
 
 	//Event when the mouse go over a point
+	var mouseover = false;
 	$("#placeholder1").bind("plothover", function (event, pos, item) {
 		//Show information
 		if (item) {
-			$("#tooltip1").html(item.series.label + " at " + item.series.data[item.dataIndex][2].datetime)
+			var x = item.datapoint[0].toFixed(2),
+			y = item.datapoint[1].toFixed(2);
+			$("#tooltip1").html("<p><b>" + item.series.label + "</b></p><p>" + x + "kb/s" + " at " + y + "dB</p>")
 				.css({top: item.pageY+5, left: item.pageX+5})
-				.fadeIn(200);
+				.fadeIn(150);
 		} else {
-			$("#tooltip1").hide();
+			if(!mouseover){
+				$("#tooltip1").fadeOut(200);
+			}
 		}
 	});
+	
+	$("#tooltip1").bind("mouseleave", function (event) {
+		if(mouseover) {
+			$("#tooltip1").fadeOut(200);
+		}
+		mouseover = false;
+	});
+	
+	$("#tooltip1").bind("mouseover", function (event) {
+		if(!mouseover) {
+			$("#tooltip1").fadeIn(150);
+		}
+		mouseover = true;
+	});
+
+	/*$("#placeholder1").bind("mouseleave", function (event, pos, item) {
+		if(item) {
+		
+		}
+	});*/
+
 });
