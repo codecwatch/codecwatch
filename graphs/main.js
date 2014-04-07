@@ -84,6 +84,28 @@ $(function() {
 		"gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
 	 }]
 
+
+	 //AjaxQuery
+	$( "#fetch" ).click(function() {
+		jQuery.ajax({
+		  type: 'GET',
+		  url: 'http://lukinos.github.io/WebSize',
+		  data: {
+			date: $( "#dateInput" ).val(),
+			sample: $( "#sampleSelector option:selected" ).text(),
+			metric: $( "#metricSelector option:selected" ).text()
+		  },
+		  success: function(data, textStatus, jqXHR) {
+			// La reponse du serveur est contenu dans data
+			// On peut faire ce qu'on veut avec ici
+		  },
+		  error: function(jqXHR, textStatus, errorThrown) {
+			// Une erreur s'est produite lors de la requete
+		  }
+		});
+	});
+
+
 	//http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
 	//Create a table of tuple (x,y) for each encoder type
 	var xyEncoder = new Object();
@@ -91,11 +113,11 @@ $(function() {
 	var entry;
 	var date;
 	for (var i = 0; i < input.length; i++) {
-		
+
 		entry = input[i];
 		date = new Date(Date.parse(entry.datetime)).toUTCString();
 		key = entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
-		
+
 		if( !(key in xyEncoder)) {
 			xyEncoder[key] = []
 		}
@@ -142,7 +164,7 @@ $(function() {
 	$("<div id='tooltip1'></div>").css({
 		position: "absolute",
 		display: "none",
-		border: "1px solid #fdd",
+		border: "4px solid #fdd",
 		padding: "2px",
 		color: "#fff",
 		"background-color": "#000",
@@ -157,7 +179,7 @@ $(function() {
 			var x = item.datapoint[0].toFixed(2),
 			y = item.datapoint[1].toFixed(2);
 			$("#tooltip1").html("<p><b>" + item.series.label + "</b></p><p>" + x + "kb/s" + " at " + y + "dB</p>")
-				.css({top: item.pageY+5, left: item.pageX+5})
+				.css({top: item.pageY+5, left: item.pageX+5, "border-color": item.series.color})
 				.fadeIn(150);
 		} else {
 			if(!mouseover){
@@ -165,7 +187,7 @@ $(function() {
 			}
 		}
 	});
-	
+
 	$("#tooltip1").bind("mouseleave", function (event) {
 		if(mouseover) {
 			$("#tooltip1").fadeOut(200);
