@@ -26,3 +26,12 @@ See commit dfb0a3d98a35083568f02f8dd84149e6a33307db
 Axel: 6h Scripting deployment (05.02)
 Install full fledged version on azure/own qemu
 Automated deploy based on config file, estimation ~4 hours
+
+Axel: 4h Read+Azure deploy (06.02)
+Explore architecture in live
+Use juju to deploy on azure, stuck at juju status
+
+Axel/Guillaume: 2h Debug Azure deploy (08.04)
+Thanks to Guillaume deployment on Azure now works with juju.
+Next step is to deploy on multiple machines, on multiple Azure accounts and
+correctly relate services like in David's thesis
