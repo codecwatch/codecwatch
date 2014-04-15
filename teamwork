@@ -35,3 +35,10 @@ Axel/Guillaume: 2h Debug Azure deploy (08.04)
 Thanks to Guillaume deployment on Azure now works with juju.
 Next step is to deploy on multiple machines, on multiple Azure accounts and
 correctly relate services like in David's thesis
+
+Axel/Guillaume/Luca: 1h Metting (16.04)
+Discuss with Mohammad Dashti and then private meeting
+
+Axel/Guillaume: 3h solve juju problems (16.04)
+trying to solve juju problems with raring, installing new vm
+with trusty on our main VM, deploying the system. Solves the problem!
