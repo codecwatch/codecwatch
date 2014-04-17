@@ -1,30 +1,24 @@
 # run as regular user (sudo is used when needed)
 
+sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:juju/stable # juju repo
-# ^ this util depends on software-properties-common
 
 juju init # init config
 juju switch local # switch to local instead of amazon deploy
-mkdir ~/.juju/local/storage/tools
-juju bootstrap --series=precise,raring --upload-tools=true # prepare env (local etc)
-# precise is useful for haproxy, raring is deprecated but used for the rest
+juju bootstrap
 # supposed OSCIED is already installed (following official guide):
 (cd OSCIED/scripts; sh menu.sh install) # if not already done
-sudo chown -R $USER ~/.juju/environments/
 (cd OSCIED/scripts; sh menu.sh deploy) # pick: Local (to deploy, separately from juju)
 # y for first install of charms
 # y for certificate per scenario
-# replace in default s/amazon/local/ (edit scenario env)
-# no to terminate (already done)
 # y for transform (1 instance)
 # y for publisher (1 instance)
 # y for orchestra
 # y for web-ui
 # n for haproxy
-# y for all storages useful
-# orchestra, wait for finish install (use htop or 'sudo juju status' wait pending)
-# when finished restart script, say no to all and yes to orchestra
-# copy by hand config.py in /var/lib/juju to /var/www/api on orchestra (look at error.log of wcgi flask)
+# y for everything until "Initialize orchestra?"
+# Then wait for everything to be deployed (use 'juju status' to see if anything is still pending)
+# Then y
 # config user in user.csv in OSCIED/scenarios/local
 
 todo:
@@ -34,9 +28,6 @@ todo:
 to do once:
 ./menu.sh install
 ./menu.sh deploy
-
-
-
 
 # custom script of OSCIED call juju inside but we could simply and deploy ourself each charms
 # Local Deployment (thesis page 92)
