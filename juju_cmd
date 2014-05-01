@@ -50,3 +50,8 @@ juju add-relation oscied-orchestra:transform oscied-transform:transform
 juju add-relation oscied-orchestra:publisher oscied-publisher:publisher
 juju add-relation oscied-orchestra:api oscied-webui:api
 juju add-relation haproxy oscied-webui
+
+# Azure current work:
+# see https://juju.ubuntu.com/docs/config-azure.html
+
+juju deploy -e azure --config transform-openstack.yaml --repository=charms/ oscied-transform
