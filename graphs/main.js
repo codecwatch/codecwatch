@@ -173,39 +173,26 @@ $(function() {
 
 	//Event when the mouse go over a point
 	var mouseover = false;
+	var timeout;
+	
 	$("#placeholder1").bind("plothover", function (event, pos, item) {
 		//Show information
 		if (item) {
+			clearTimeout(timeout);
 			var x = item.datapoint[0].toFixed(2),
 			y = item.datapoint[1].toFixed(2);
 			$("#tooltip1").html("<p><b>" + item.series.label + "</b></p><p>" + x + "kb/s" + " at " + y + "dB</p>")
 				.css({top: item.pageY+5, left: item.pageX+5, "border-color": item.series.color})
-				.fadeIn(150);
+				.fadeIn(200);
 		} else {
-			if(!mouseover){
-				$("#tooltip1").fadeOut(200);
-			}
+			clearTimeout(timeout);
+			timeout = setTimeout(function(){
+					$('#tooltip1').fadeOut(200);
+				},750);
 		}
-	});
-
-	$("#tooltip1").bind("mouseleave", function (event) {
-		if(mouseover) {
-			$("#tooltip1").fadeOut(200);
-		}
-		mouseover = false;
 	});
 	
-	$("#tooltip1").bind("mouseover", function (event) {
-		if(!mouseover) {
-			$("#tooltip1").fadeIn(150);
-		}
-		mouseover = true;
+	$("#tooltip1").bind("mouseenter", function (event) {
+		clearTimeout(timeout);
 	});
-
-	/*$("#placeholder1").bind("mouseleave", function (event, pos, item) {
-		if(item) {
-		
-		}
-	});*/
-
 });
