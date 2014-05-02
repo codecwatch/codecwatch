@@ -11,7 +11,8 @@
 	
 	<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/redmond/jquery-ui.css" />
 	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
-	
+	<link rel="stylesheet" media="all" type="text/css" href="chosen.css">
+	 
   </head>
   <body>
     <div class="container-fluid">
@@ -22,11 +23,12 @@
 	  <input type="text" id="dateInputFrom" value="" />
 	  <input type="text" id="dateInputTo" value="" />
       <br>
-      <strong>Sample:</strong>
-      <select id="sampleSelector">
-        <option>fileA.mp4</option>
-        <option>fileB.mp4</option>
-      </select>
+	  <strong>Sample:</strong>
+	  <select id="sampleSelector" class="my_select_box" data-placeholder="Select Your Sampler" multiple="">
+		<option value="1">Option 1</option>
+		<option value="2">Option 2</option>
+		<option value="3">Option 3</option>
+	  </select>
       <br>
       <strong>Metrics:</strong>
       <select id="metricSelector">
@@ -34,7 +36,14 @@
         <option>SSIM</option>
       </select>
 	  <br>
-	  <button id="fetch" type="button">Click Me!</button>
+	  <strong>Encoders:</strong>
+	  <select id="encoderSelector" class="my_select_box" data-placeholder="Select Your Encoder" multiple="">
+		<option value="1">Encoder 1</option>
+		<option value="2">Encoder 2</option>
+		<option value="3">Encoder 3</option>
+	  </select>
+	  <br>
+	  <button id="fetch" type="button">Execute !</button>
 	  <div id="content">
 		<div class="graph-container">
 		  <div id="placeholder1" class="graph-placeholder"></div>
@@ -48,6 +57,7 @@
 	  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 	  <script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
 	  <script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+	  <script type="text/javascript" src="chosen.jquery.min.js"></script>
 	  
 	  <script src="./main.js"></script>
     </div>
