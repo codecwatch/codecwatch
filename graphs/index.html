@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CodecWatch graphs</title>
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/g/bootstrap@3.1(css/bootstrap.min.css+css/bootstrap-theme.min.css)">
-	<link rel="stylesheet" href="./main.css" type="text/css">
-	<script src="http://cdn.jsdelivr.net/g/jquery@1.11,bootstrap@3.1,jquery.flot@0.8(jquery.flot.min.js+jquery.flot.time.min.js)"></script>
-	
-	<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/redmond/jquery-ui.css" />
-	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
-	<link rel="stylesheet" media="all" type="text/css" href="chosen.css">
-	 
+    <link rel="stylesheet" href="./main.css" type="text/css">
+    <script src="http://cdn.jsdelivr.net/g/jquery@1.11,bootstrap@3.1,jquery.flot@0.8(jquery.flot.min.js+jquery.flot.time.min.js)"></script>
+
+    <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/redmond/jquery-ui.css" />
+    <link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+    <link rel="stylesheet" media="all" type="text/css" href="chosen.css">
+
   </head>
   <body>
     <div class="container-fluid">
@@ -20,46 +20,46 @@
         <h1>CodecWatch graphs</h1>
       </div>
       <strong>DateTime:</strong>
-	  <input type="text" id="dateInputFrom" value="" />
-	  <input type="text" id="dateInputTo" value="" />
+      <input type="text" id="dateInputFrom" value="" />
+      <input type="text" id="dateInputTo" value="" />
       <br>
-	  <strong>Sample:</strong>
-	  <select id="sampleSelector" class="my_select_box" data-placeholder="Select Your Sampler" multiple="">
-		<option value="1">Option 1</option>
-		<option value="2">Option 2</option>
-		<option value="3">Option 3</option>
-	  </select>
+      <strong>Sample:</strong>
+      <select id="sampleSelector" class="my_select_box" data-placeholder="Select Your Sampler" multiple="">
+        <option selected>Option 1</option>
+        <option>Option 2</option>
+        <option>Option 3</option>
+      </select>
       <br>
       <strong>Metrics:</strong>
       <select id="metricSelector">
         <option>PSNR</option>
         <option>SSIM</option>
       </select>
-	  <br>
-	  <strong>Encoders:</strong>
-	  <select id="encoderSelector" class="my_select_box" data-placeholder="Select Your Encoder" multiple="">
-		<option value="1">Encoder 1</option>
-		<option value="2">Encoder 2</option>
-		<option value="3">Encoder 3</option>
-	  </select>
-	  <br>
-	  <button id="fetch" type="button">Execute !</button>
-	  <div id="content">
-		<div class="graph-container">
-		  <div id="placeholder1" class="graph-placeholder"></div>
-		</div>
+      <br>
+      <strong>Encoders:</strong>
+      <select id="encoderSelector" class="my_select_box" data-placeholder="Select Your Encoder" multiple="">
+        <option>x264</option>
+        <option selected>xTOTO</option>
+        <option>Encoder 3</option>
+      </select>
+      <br>
+      <button id="fetch" type="button">Execute !</button>
+      <div id="content">
+        <div class="graph-container">
+          <div id="placeholder1" class="graph-placeholder"></div>
+        </div>
         <!--
-		    <div class="graph-container">
-			  <div id="placeholder2" class="graph-placeholder"></div>
-		    </div> -->
-	  </div>
-	  
-	  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-	  <script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
-	  <script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
-	  <script type="text/javascript" src="chosen.jquery.min.js"></script>
-	  
-	  <script src="./main.js"></script>
+            <div class="graph-container">
+              <div id="placeholder2" class="graph-placeholder"></div>
+            </div> -->
+      </div>
+
+      <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+      <script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+      <script type="text/javascript" src="chosen.jquery.min.js"></script>
+
+      <script src="./main.js"></script>
     </div>
   </body>
 </html>
