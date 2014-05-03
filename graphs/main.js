@@ -165,7 +165,8 @@ $(function() {
 
             entry = input[i];
             date = new Date(Date.parse(entry.datetime)).toUTCString();
-            key = entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
+            //Key will represent the legend name also
+            key = entry.sample + " : " + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
 
             if( !(key in xyEncoder)) {
                 xyEncoder[key] = []
@@ -204,7 +205,7 @@ $(function() {
                 }
             },
             legend: {
-                margin: [-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2.8, 0]
+                //margin: [-$(".legend").css("width")., 0]//[-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2.8, 0]
             }
         });
 
@@ -243,6 +244,11 @@ $(function() {
         $("#tooltip1").bind("mouseenter", function (event) {
             clearTimeout(timeout);
         });
+
+        // Modify style of the legend
+
+        $('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
+        //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
     };
 
     /***************************************************************************************
@@ -275,20 +281,10 @@ $(function() {
             options.samples.push(selected.label);
         });
 
-        //console.log(;
-        /*var value = $("select#encoderSelector").html();
-        console.log(value);
-        for(key in value) {
-            console.log(key);
-         }*/
-        /*jQuery.ajax({
+        jQuery.ajax({
           type: 'GET',
           url: 'http://lukinos.github.io/WebSize',
-          data: {
-            date: $( "#dateInput" ).val(),
-            sample: $( "#sampleSelector option:selected" ).text(),
-            metric: $( "#metricSelector option:selected" ).text()
-          },
+          data: options,
           success: function(data, textStatus, jqXHR) {
             // La reponse du serveur est contenu dans data
             // On peut faire ce qu'on veut avec ici
@@ -296,10 +292,10 @@ $(function() {
           error: function(jqXHR, textStatus, errorThrown) {
             // Une erreur s'est produite lors de la requete
           }
-        });*/
+        });
     });
 
-
-     generateGraph(foo);
+    //change null by return of the ajax query with option
+     generateGraph(null);
 
 });
