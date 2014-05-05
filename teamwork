@@ -43,10 +43,16 @@ Axel/Guillaume: 3h solve juju problems (16.04)
 trying to solve juju problems with raring, installing new vm
 with trusty on our main VM, deploying the system. Solves the problem!
 
+Axel: 3h Debug juju on azure (21.04)
+Need assistance of guys on IRC to debug juju with Azure,
+there is a bug, now reported upstream, can continue work
+
 Axel/Guillaume/Luca: ?h Meeting (30.04)
 Discuss with Mohammad Dashti
 
 Axel/Guillaume/Luca: 2h Meeting (01.05)
+discuss plan for next weeks, how to solve problems and go forward
+need to reviews deadlines and wiki
 
 Luca: (Estimation 7h) Interface (02.05 (7h))
 Modification of the graph with the advice of Guillaume
