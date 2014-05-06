@@ -19,34 +19,50 @@
       <div class="page-header text-center">
         <h1>CodecWatch graphs</h1>
       </div>
-      <strong>DateTime:</strong>
-      <input type="text" id="dateInputFrom" value="" />
-      <input type="text" id="dateInputTo" value="" />
+
+      <table class="table-input">
+         <tr>
+          <td>Date Time:</td>
+          <td><input type="text" id="dateInputFrom" value="" /> to <input type="text" id="dateInputTo" value="" /></td>
+        </tr>
+        <tr>
+          <td>Sample:</td>
+          <td>
+            <select id="sampleSelector" class="my_select_box" data-placeholder="Select Your Sampler" multiple="">
+              <option selected>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Metrics:</td>
+          <td>
+            <select id="metricSelector">
+              <option>PSNR</option>
+              <option>SSIM</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Encoders:</td>
+          <td>
+            <select id="encoderSelector" class="my_select_box" data-placeholder="Select Your Encoder" multiple="">
+              <option>x264</option>
+              <option selected>xTOTO</option>
+              <option>Encoder 3</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+
       <br>
-      <strong>Sample:</strong>
-      <select id="sampleSelector" class="my_select_box" data-placeholder="Select Your Sampler" multiple="">
-        <option selected>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 3</option>
-      </select>
-      <br>
-      <strong>Metrics:</strong>
-      <select id="metricSelector">
-        <option>PSNR</option>
-        <option>SSIM</option>
-      </select>
-      <br>
-      <strong>Encoders:</strong>
-      <select id="encoderSelector" class="my_select_box" data-placeholder="Select Your Encoder" multiple="">
-        <option>x264</option>
-        <option selected>xTOTO</option>
-        <option>Encoder 3</option>
-      </select>
-      <br>
-      <button id="fetch" type="button">Execute !</button>
+
+      <button id="fetch" type="button" class="btn btn-lg btn-default">Execute !</button>
       <div id="content">
         <div class="graph-container">
           <div id="placeholder1" class="graph-placeholder"></div>
+          <div id="legend"></div>
         </div>
         <!--
             <div class="graph-container">

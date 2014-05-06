@@ -5,6 +5,8 @@
 	padding: 20px 15px 15px 15px;
 	margin: 15px auto 30px auto;
 	border: 1px solid #ddd;
+    position:relative;
+    right:10%;
 	background: #fff;
 	background: linear-gradient(#f6f6f6 0, #fff 50px);
 	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
@@ -18,8 +20,16 @@
 	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
-br {
-	line-height: 200%;
+.table-input  tr {
+    height: 40px;
+}
+
+.table-input td {
+    padding-right: 10px;
+}
+
+.table-input td:first-child {
+    font-weight: bold;
 }
 
 .graph-placeholder {
@@ -29,3 +39,25 @@ br {
 	line-height: 1.2em;
 }
 
+#legend > table {
+    font-size: medium !important;
+}
+
+.legendColorBox > div > div{
+    border-style: solid !important;
+    border-width: 7px !important;
+}
+
+.legendLabel{
+    width: 2px;
+}
+
+.legendTitle {
+    font-weight: bold;
+    font-size: medium;
+    padding-right: 1px;
+}
+
+.legendInfo {
+    padding-left: 2px;
+}

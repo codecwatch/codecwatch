@@ -166,7 +166,8 @@ $(function() {
             entry = input[i];
             date = new Date(Date.parse(entry.datetime)).toUTCString();
             //Key will represent the legend name also
-            key = entry.sample + " : " + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
+            //key = entry.sample + " : " + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
+            key = "<td class=legendTitle>" + entry.sample + " : </td><td class=legendInfo>" + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")</td>";
 
             if( !(key in xyEncoder)) {
                 xyEncoder[key] = []
@@ -205,6 +206,7 @@ $(function() {
                 }
             },
             legend: {
+                container: "#legend"
                 //margin: [-$(".legend").css("width")., 0]//[-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2.8, 0]
             }
         });
@@ -245,9 +247,13 @@ $(function() {
             clearTimeout(timeout);
         });
 
-        // Modify style of the legend
+        // Modify position of the legend
+        $('#legend').css('position','relative');
+        $('#legend').css('top',-$('#placeholder1').height());
+        $('#legend').css('right',-$('#placeholder1').width()*1.03);
+        $('#legend').css('background-color','rgb(255, 255, 255, 0.85)');
 
-        $('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
+        //$('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
         //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
     };
 
