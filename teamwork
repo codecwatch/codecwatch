@@ -56,3 +56,10 @@ need to reviews deadlines and wiki
 
 Luca: (Estimation 7h) Interface (02.05 (7h))
 Modification of the graph with the advice of Guillaume
+
+Axel: 4h Integrate PSNR into OSCIED (06.05)
+Read docs and understand how metadata are pushed from transformer to
+orchestra DB and how it's pulled from webui in the interface. The code is now
+modified to run the Daala tools to measure quality (PSNR) in the transformer,
+these measures are sent to orchestra and displaied in the webui after job
+completion.
