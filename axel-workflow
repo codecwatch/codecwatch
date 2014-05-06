@@ -15,6 +15,8 @@ in orchestra, etc), will need to merge in the charms at the end (for redeploy).
 server.py: define how to get data from mongodb (with Models) + callbacks (when jobs done)
 utils.py: define init of orchestra (nearly useless)
 models: define structure of mongodb objects, what's in the DB
+api_base.py: bridge for callbacks before real method call in server.py
+    eg: api_transform_task_hook in api_base.py and transform_callback in server.py
 
 need to restart apache2 to use new code (in chroot, juju ssh -e local 4):
 sudo service apache2 restart
