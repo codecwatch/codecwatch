@@ -1,0 +1,38 @@
+-- git workflow
+in each lxc, I have a git at the parent directory where I modify files,
+the git is pushed, outside the lxc, nearby the home to save my work.
+
+eg: in
+/home/codecwatch/lxc/codecwatch-local-machine-3/rootfs/var/www/api
+I have a .git, because I modify server.py (for orchestra), this is pushed to:
+/home/codecwatch/axel-working/orchestra/
+which is a bare repo. This workflow is replicated for webui and transform (with
+different parent directory, due to the different structure). The files are
+replicated everywhere, I only modify the file where it is used (server.py only
+in orchestra, etc), will need to merge in the charms at the end (for redeploy).
+
+-- orchestra structure:
+server.py: define how to get data from mongodb (with Models) + callbacks (when jobs done)
+utils.py: define init of orchestra (nearly useless)
+models: define structure of mongodb objects, what's in the DB
+
+need to restart apache2 to use new code (in chroot, juju ssh -e local 4):
+sudo service apache2 restart
+
+-- transform structure:
+working in
+/var/lib/lxc/codecwatch-local-machine-1/rootfs/var/lib/juju/agents/unit-oscied-transform-0/charm/library
+oscied_lib/TransformWorker.py defines the ffmpeg process, added the measures for our project
+
+need to restart celery to use new code (in chroot, juju ssh -e local 1):
+sudo -u www-data /usr/bin/python -m celery worker --queues=transform,transform_codecwatch-local-machine-1 -n transform@codecwatch-local-machine-1 --loglevel=INFO --workdir=/var/lib/juju/agents/unit-oscied-transform-0/charm --logfile=/var/log/celery/transform.log --pidfile=/var/run/celery/transform.pid &
+
+-- webui structure:
+working in
+/var/lib/lxc/codecwatch-local-machine-4/rootfs/var/www/webui
+in
+application/views/media/show_medias.php
+changed the column display to add our measure, yet to be finished to use
+orchestra mongo column (measures).
+
+no need to reload code, done in realtime (php)
