@@ -30,6 +30,7 @@
 
 .table-input td:first-child {
     font-weight: bold;
+    text-align: right;
 }
 
 .graph-placeholder {
