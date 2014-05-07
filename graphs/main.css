@@ -1,4 +1,8 @@
+body {
+    background-color: pink;
+}
 .graph-container {
+    visibility:hidden;
 	box-sizing: border-box;
 	width: 850px;
 	height: 450px;
@@ -45,6 +49,8 @@
 }
 
 #legend > table {
+    border: 3px solid green!important;
+    background-color: pink;
     font-size: medium !important;
 }
 

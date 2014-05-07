@@ -77,7 +77,9 @@ $(function() {
     /**
      * Dummy values
      */
-    var input = [
+    var input = [{"encoder":"https:\/\/github.com\/videolan\/x265","sample":"out12.webm","datetime":"2014-05-07 17:50:30","type":"PSNR","rate":"595","value":"7.81451","gitrev":"d2051f9544434612a105d2f5267db23018cb3454"}];
+
+   /* var input = [
     {
         "encoder": "x264",
         "sample": "fileA.mp4",
@@ -150,7 +152,7 @@ $(function() {
         "value": "-6",
         "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
      }]
-
+*/
     /**
      * Generate the graph in function of the selected options
      */
@@ -164,7 +166,7 @@ $(function() {
         for (var i = 0; i < input.length; i++) {
 
             entry = input[i];
-            date = new Date(Date.parse(entry.datetime)).toUTCString();
+            date = entry.datetime;//new Date(Date.parse(entry.datetime)).toUTCString();
             //Key will represent the legend name also
             //key = entry.sample + " : " + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
             key = "<td class=legendTitle>" + entry.sample + " : </td><td class=legendInfo>" + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")</td>";
@@ -181,6 +183,7 @@ $(function() {
             dataset.push({"label" : key , "data" : xyEncoder[key].sort()});
         }
 
+        var precisionAxis = 3;
         //https://github.com/flot/flot/blob/master/API.md
         //Plot
         var plot = $.plot("#placeholder1", dataset, {
@@ -197,12 +200,12 @@ $(function() {
             },
             xaxis: {
                 tickFormatter: function (v) {
-                    return v + " kb/s";
+                    return v.toFixed(precisionAxis) + " kb/s";
                 }
             },
             yaxis: {
                 tickFormatter: function (v) {
-                    return v + " dB";
+                    return v.toFixed(precisionAxis) + " dB";
                 }
             },
             legend: {
@@ -253,6 +256,9 @@ $(function() {
         $('#legend').css('right',-$('#placeholder1').width()*1.03);
         $('#legend').css('background-color','rgb(255, 255, 255, 0.85)');
 
+        $('#graph1').hide();
+        $('#graph1').toggle( "explode" );
+        //$( "#toggle" ).toggle( "explode" );
         //$('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
         //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
     };
@@ -298,9 +304,8 @@ $(function() {
             // Une erreur s'est produite lors de la requete
           }
         });
-    });
 
-    //change null by return of the ajax query with option
-     generateGraph(null);
+        generateGraph(null);
+    });
 
 });
