@@ -1,9 +1,9 @@
 "use strict;"
 $(function() {
 
-    /***************************************************************************************
-        Handling link between Encoder and Git Revision
-    ****************************************************************************************/  
+    /**
+     * Handling link between Encoder and Git Revision
+     */
     // Specify your encoder with the git revision base link
     var mapEncoder = new Object();
     mapEncoder["x264"] = "https://git.videolan.org/?p=x264.git;a=commit;h=";
@@ -15,20 +15,20 @@ $(function() {
     }
 
 
-    /***************************************************************************************
-        Activate the chosen selector (Sample and Encoders)
-    ****************************************************************************************/  
+    /**
+     * Activate the chosen selector (Sample and Encoders)
+     */
     $(".my_select_box").chosen({
         no_results_text: "Oops, nothing found!",
         search_contains: true,
         width: "100%"
     });
 
-    /***************************************************************************************
-        Configure the DateTime input adding a new system to chose the minutes and seconds
-        and activate it (dateInputFrom and dateInputTo)
-        From the example : http://trentrichardson.com/examples/timepicker/
-    ****************************************************************************************/    
+    /**
+     * Configure the DateTime input adding a new system to chose the minutes and seconds
+     * and activate it (dateInputFrom and dateInputTo)
+     * From the example : http://trentrichardson.com/examples/timepicker/
+     */
     var myControl=  {
         create: function(tp_inst, obj, unit, val, min, max, step){
             $('<input class="ui-timepicker-input" value="'+val+'" style="width:50%">')
@@ -74,9 +74,9 @@ $(function() {
     });
     $('#dateInputTo').datetimepicker('setDate', (new Date()) );
 
-    /***************************************************************************************
-        Dummy values
-    ****************************************************************************************/    
+    /**
+     * Dummy values
+     */
     var input = [
     {
         "encoder": "x264",
@@ -151,9 +151,9 @@ $(function() {
         "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
      }]
 
-    /***************************************************************************************
-        Generate the graph in function of the selected options
-    ****************************************************************************************/  
+    /**
+     * Generate the graph in function of the selected options
+     */
     function generateGraph(options) {
         //http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
         //Create a table of tuple (x,y) for each encoder type
@@ -257,12 +257,11 @@ $(function() {
         //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
     };
 
-    /***************************************************************************************
-        Ajax Query for Execute ! button (MAIN)
-
-        Reyssor: crochets, c'est dictionnaire et brackets listes je crois
-
-    ****************************************************************************************/ 
+    /**
+     * Ajax Query for Execute ! button (MAIN)
+     *
+     * Reyssor: crochets, c'est dictionnaire et brackets listes je crois
+     */
     $( "#fetch" ).click(function() {
 
         //Create options and fill it with the different field
