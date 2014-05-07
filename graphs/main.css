@@ -40,6 +40,10 @@
 	line-height: 1.2em;
 }
 
+#legend {
+    float:left;
+}
+
 #legend > table {
     font-size: medium !important;
 }
@@ -61,4 +65,8 @@
 
 .legendInfo {
     padding-left: 2px;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  height: auto !important;
 }
