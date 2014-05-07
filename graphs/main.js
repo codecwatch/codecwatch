@@ -21,7 +21,7 @@ $(function() {
     $(".my_select_box").chosen({
         no_results_text: "Oops, nothing found!",
         search_contains: true,
-        width: "30%"
+        width: "100%"
     });
 
     /***************************************************************************************
