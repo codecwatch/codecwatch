@@ -1,7 +1,7 @@
 A video encoding benchmark platform
 ==================
 
-Amazon EC2 instances
+Basic idea, with Amazon EC2 instances
 ------------------
 
 ~~~~~~~
@@ -19,11 +19,16 @@ Amazon EC2 instances
   the encode and the metrics are copied to the S3 volume. If the video is
   chunked, the chunks are concatenated.
 
+Instead of doing all of this ourselves, use [OSCIED](https://github.com/codecwatch/OSCIED)
+------------------
+* Already takes care of distributed encoding
+* Needs to be extended for nightly encodes, metrics calculations and display, etc.
+
 Frontend
 ------------------
 * The web frontend displaying the results run on the dataset (since it's mostly
   idle otherwise)
-* It can also be used to download/stream the videos (Amazon S3 handles the load)
+* It can also be used to download/stream the videos
 * The encoder binaries are stored on S3 and periodically updated, then a new set
   of encode is triggered.
 * When a privileged user asks for it, an encoder is rebuilt from his git branch
@@ -47,17 +52,20 @@ Requirements
 
 Team roles:
 ------------------
-* Video pipeline handling: Guillaume Martres, …
-* Backend: Axel Angel, …
-* Frontend: Luca La Spada, …
+* Video pipeline handling: Guillaume Martres
+* Backend: Axel Angel
+* Frontend: Luca La Spada
 
-Deliverables
+Deliverables (updated)
 ------------------
-* April 7:
-  * Axel and Guillaume: A set of standard videos is encoded periodically using x264, x265, kvazaar and libvpx by the backend
-  * Luca: The frontend can display simple stats like http://arewefastyet.com (work done by Luca).
-* April 28:
-  * Everyone: Support for user accounts which can trigger a set of encodes using an encoder built from their git branch.
+* April 14:
+  * Guillaume: fixed various bugs in OSCIED to make it usable
+  * Axel: Set up the servers, work on using OSCIED on Azure
+  * Luca: The frontend can display simple stats like http://arewefastyet.com
+* May 7:
+  * Guillaume: upgrade OSCIED to work on the latest version of Ubuntu (needed for Azure support)  
+  * Axel: Encoding tasks collect metrics to be displayed in the UI
+  * Luca: the frontend is more usable and can display data from multiple encoders and multiple files at once
 * May 13:
-  * Everyone: Users can upload new videos.
+  * Guillaume: Support for user accounts which can trigger a set of encodes using an encoder built from their git branch.
   * Luca: The frontend can be used to download/stream the videos and to compare them like http://exp.martres.me/splitview/ .
