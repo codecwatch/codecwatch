@@ -58,7 +58,7 @@ Axel/Guillaume/Luca: 2h Meeting (01.05)
 discuss plan for next weeks, how to solve problems and go forward
 need to reviews deadlines and wiki
 
-Luca: (Estimation 7h) Interface (02.05 (7h) + 06.05 (3h))
+Luca: (Total 10h) Interface (02.05 (7h) + 06.05 (3h))
 Modification of the graph with the advice of Guillaume
 
 Axel: 4h Integrate PSNR into OSCIED (06.05)
@@ -72,3 +72,6 @@ Guillaume: 2h Start of HTTP API to get the statistics (07.05)
 To be able to display statistics from the encoded videos in our frontend,
 we need an API to query, this will be done in JSON and it will be part of
 the webui.
+
+Luca: SplitView 4h (09.05)
+Improve SplitView : Add blindtest feature, add legend for video
