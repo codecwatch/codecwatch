@@ -68,10 +68,18 @@ modified to run the Daala tools to measure quality (PSNR) in the transformer,
 these measures are sent to orchestra and displaied in the webui after job
 completion.
 
-Guillaume: 2h Start of HTTP API to get the statistics (07.05)
+Axel: 1h Integrate git fields into webui (06.05)
+I can now add more fields to the mongodb/webui from the transformers, now I
+added git fields (repo url, commit).
+
+Guillaume/Axel: 2h Start of HTTP API to get the statistics (07.05)
 To be able to display statistics from the encoded videos in our frontend,
 we need an API to query, this will be done in JSON and it will be part of
 the webui.
 
 Luca: SplitView 4h (09.05)
 Improve SplitView : Add blindtest feature, add legend for video
+
+Axel: 1h report juju-core bug (11.05)
+Report juju-core bug upstream, describe, reproductible
+https://bugs.launchpad.net/juju-core/+bug/1316185
