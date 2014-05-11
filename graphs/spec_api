@@ -1,0 +1,8 @@
+send GET request to webui/json
+with parameters:
+
+'date_from': date unix timestamp for first sample if available (eg: 1390000000)
+'date_to': date unix timestamp for last sample if available (eg: 1400000000)
+'file': filename with extension (eg: bus_cif_2x.mp4)
+'metric': for eg: psnr, ssim
+'git_url': git url of the encoder
