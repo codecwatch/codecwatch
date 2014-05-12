@@ -77,13 +77,6 @@ $(function() {
     /**
      * Dummy values
      */
-                "git_url" => $media->metadata->measures->git_url,
-                "file" => $media->filename,
-                "date" => $media->metadata->add_date,
-                "metric" => "PSNR",
-                "bitrate" => $media->metadata->measures->bitrate,
-                "value" => $media->metadata->measures->psnr,
-                "git_commit" => $media->metadata->measures->git_commit,
 
     var input = [{
         "datetime": "2014-05-07 17:50:30",
