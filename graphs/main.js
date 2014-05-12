@@ -77,82 +77,24 @@ $(function() {
     /**
      * Dummy values
      */
-    var input = [{"encoder":"https:\/\/github.com\/videolan\/x265","sample":"out12.webm","datetime":"2014-05-07 17:50:30","type":"PSNR","rate":"595","value":"7.81451","gitrev":"d2051f9544434612a105d2f5267db23018cb3454"}];
+                "git_url" => $media->metadata->measures->git_url,
+                "file" => $media->filename,
+                "date" => $media->metadata->add_date,
+                "metric" => "PSNR",
+                "bitrate" => $media->metadata->measures->bitrate,
+                "value" => $media->metadata->measures->psnr,
+                "git_commit" => $media->metadata->measures->git_commit,
 
-   /* var input = [
-    {
-        "encoder": "x264",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:01Z",
+    var input = [{
+        "datetime": "2014-05-07 17:50:30",
+        "encoder": "https://github.com/videolan/x265",
+        "gitrev": "d2051f9544434612a105d2f5267db23018cb3454",
+        "rate": "595",
+        "sample": "out12.webm",
         "type": "PSNR",
-        "rate": "8001.3232",
-        "value": "15",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "x264",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:01Z",
-        "type": "PSNR",
-        "rate": "7900.3232",
-        "value": "20",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "x264",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:01Z",
-        "type": "PSNR",
-        "rate": "7945.3232",
-        "value": "50",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "x264",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:02Z",
-        "type": "PSNR",
-        "rate": "8040.3232",
-        "value": "10",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "xTOTO",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:02Z",
-        "type": "PSNR",
-        "rate": "8070.3232",
-        "value": "0",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "xTOTO",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:02Z",
-        "type": "PSNR",
-        "rate": "7840.3232",
-        "value": "60",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "xTOTO",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:02Z",
-        "type": "PSNR",
-        "rate": "8704.3232",
-        "value": "40",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     },
-     {
-        "encoder": "xTOTO",
-        "sample": "fileA.mp4",
-        "datetime": "2014-04-04T12:42:01Z",
-        "type": "PSNR",
-        "rate": "7987.3232",
-        "value": "-6",
-        "gitrev": "bd62cf0690a426744cebc376ba7917988245366c"
-     }]
-*/
+        "value": "7.81451"
+    }];
+
     /**
      * Generate the graph in function of the selected options
      */
