@@ -6,3 +6,13 @@ with parameters:
 'file': filename with extension (eg: bus_cif_2x.mp4)
 'metric': for eg: psnr, ssim
 'git_url': git url of the encoder
+
+receiving:
+
+git_url: git url of the encoder
+file: filename with extension (eg: bus_cif_2x.mp4)
+date: added date
+metric: for eg: psnr, ssim
+bitrate: bitrate of the media in kbps
+value: value for the requested metric
+git_commit: git commit of the encoder used for the sample
