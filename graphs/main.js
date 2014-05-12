@@ -1,246 +1,306 @@
 "use strict;"
-$(function() {
 
-    /**
-     * Handling link between Encoder and Git Revision
-     */
-    // Specify your encoder with the git revision base link
-    var mapEncoder = new Object();
-    mapEncoder["x264"] = "https://git.videolan.org/?p=x264.git;a=commit;h=";
-    mapEncoder["xTOTO"] = "https://www.google.ch/#q=";
+var dateFromInput = document.getElementById("dateFromInput");
+var dateToInput = document.getElementById("dateToInput");
+var placeholderDiv = document.getElementById("placeholder1");
+var tooltip = "tooltip1";
+var tooltipDiv = document.getElementById(tooltip);
+var legendDiv = document.getElementById("legend");
+var graphDiv = document.getElementById("graph1");
+var sampleSelector = document.getElementById("sampleSelector");
+var metricSelector = document.getElementById("metricSelector");
+var encoderSelector = document.getElementById("encoderSelector");
+var executeButton = document.getElementById("fetch");
 
-    // Combine a git revision with his base link
-    function mapEncoGitToLink(encoder, gitrev) {
-        return "<a href=" + mapEncoder[encoder]+gitrev + ">Git revison</a>"; 
+
+var legendTitleClass = "legendTitle";
+var legendInfoClass = "legendInfo";
+
+
+/**
+ * Handling link between Encoder and Git Revision
+ */
+// Specify your encoder with the git revision base link
+var mapEncoder = new Object();
+mapEncoder["https://github.com/videolan/x265"] = "x265";
+mapEncoder["xTOTO"] = "https://www.google.ch/#q=";
+
+function gitUrlToEncoder(gitUrl) {
+    return mapEncoder[gitUrl];
+}
+
+// Combine a git revision with his base link
+function mapEncoGitToLink(encoder, git_commit) {
+    return "<a href=" + encoder + git_commit + ">Git revison</a>";
+}
+
+
+/**
+ * Activate the chosen selector (Sample and Encoders)
+ */
+$(".my_select_box").chosen({
+    no_results_text: "Oops, nothing found!",
+    search_contains: true,
+    width: "100%"
+});
+
+/**
+ * Configure the DateTime input adding a new system to chose the minutes and seconds
+ * and activate it (dateInputFrom and dateInputTo)
+ * From the example : http://trentrichardson.com/examples/timepicker/
+ */
+var myControl = {
+    create: function (tp_inst, obj, unit, val, min, max, step) {
+        $('<input class="ui-timepicker-input" value="' + val + '" style="width:50%">')
+            .appendTo(obj)
+            .spinner({
+                min: min,
+                max: max,
+                step: step,
+                change: function (e, ui) { // key events
+                    // don't call if api was used and not key press
+                    if (e.originalEvent !== undefined)
+                        tp_inst._onTimeChange();
+                    tp_inst._onSelectHandler();
+                },
+                spin: function (e, ui) { // spin events
+                    tp_inst.control.value(tp_inst, obj, unit, ui.value);
+                    tp_inst._onTimeChange();
+                    tp_inst._onSelectHandler();
+                }
+            });
+        return obj;
+    },
+    options: function (tp_inst, obj, unit, opts, val) {
+        if (typeof (opts) == 'string' && val !== undefined)
+            return obj.find('.ui-timepicker-input').spinner(opts, val);
+        return obj.find('.ui-timepicker-input').spinner(opts);
+    },
+    value: function (tp_inst, obj, unit, val) {
+        if (val !== undefined)
+            return obj.find('.ui-timepicker-input').spinner('value', val);
+        return obj.find('.ui-timepicker-input').spinner('value');
+    }
+};
+
+$(dateFromInput).datetimepicker({
+    controlType: myControl,
+    timeFormat: 'HH:mm:ss',
+});
+$(dateFromInput).datetimepicker('setDate', (new Date()));
+
+$(dateToInput).datetimepicker({
+    controlType: myControl,
+    timeFormat: 'HH:mm:ss'
+});
+$(dateToInput).datetimepicker('setDate', (new Date()));
+
+
+/**
+ * Generate the graph in function of the data
+ */
+function generateGraph(data) {
+    //http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
+    //Create a table of tuple (x,y) for each encoder metric
+    var xyEncoder = new Object();
+    var key;
+    var entry;
+    var date;
+    for (var i = 0; i < data.length; i++) {
+
+        entry = data[i];
+        date = entry.date; //new Date(Date.parse(entry.date)).toUTCString();
+        //Key will represent the legend name also
+        //key = entry.file + " : " + entry.git_url + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")";
+        key = "<td class='" + legendTitleClass + "'>" + entry.file + " : </td><td class='" + legendInfoClass + "'>" + gitUrlToEncoder(entry.git_url) + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")</td>";
+
+        if (!(key in xyEncoder)) {
+            xyEncoder[key] = []
+        }
+        xyEncoder[key].push([entry.bitrate, entry.value, {
+            "git_url": entry.git_url,
+            "file": entry.file,
+            "date": date,
+            "metric": entry.metric,
+            "git_commit": data[i].git_commit
+        }]);
     }
 
-
-    /**
-     * Activate the chosen selector (Sample and Encoders)
-     */
-    $(".my_select_box").chosen({
-        no_results_text: "Oops, nothing found!",
-        search_contains: true,
-        width: "100%"
-    });
-
-    /**
-     * Configure the DateTime input adding a new system to chose the minutes and seconds
-     * and activate it (dateInputFrom and dateInputTo)
-     * From the example : http://trentrichardson.com/examples/timepicker/
-     */
-    var myControl=  {
-        create: function(tp_inst, obj, unit, val, min, max, step){
-            $('<input class="ui-timepicker-input" value="'+val+'" style="width:50%">')
-                .appendTo(obj)
-                .spinner({
-                    min: min,
-                    max: max,
-                    step: step,
-                    change: function(e,ui){ // key events
-                            // don't call if api was used and not key press
-                            if(e.originalEvent !== undefined)
-                                tp_inst._onTimeChange();
-                            tp_inst._onSelectHandler();
-                        },
-                    spin: function(e,ui){ // spin events
-                            tp_inst.control.value(tp_inst, obj, unit, ui.value);
-                            tp_inst._onTimeChange();
-                            tp_inst._onSelectHandler();
-                        }
-                });
-            return obj;
-        },
-        options: function(tp_inst, obj, unit, opts, val){
-            if(typeof(opts) == 'string' && val !== undefined)
-                return obj.find('.ui-timepicker-input').spinner(opts, val);
-            return obj.find('.ui-timepicker-input').spinner(opts);
-        },
-        value: function(tp_inst, obj, unit, val){
-            if(val !== undefined)
-                return obj.find('.ui-timepicker-input').spinner('value', val);
-            return obj.find('.ui-timepicker-input').spinner('value');
-    }};
-
-    $('#dateInputFrom').datetimepicker({
-        controlType: myControl,
-        timeFormat: 'HH:mm:ss',
-    });
-    $('#dateInputFrom').datetimepicker('setDate', (new Date()) );
-
-    $('#dateInputTo').datetimepicker({
-        controlType: myControl,
-        timeFormat: 'HH:mm:ss'
-    });
-    $('#dateInputTo').datetimepicker('setDate', (new Date()) );
-
-    /**
-     * Dummy values
-     */
-
-    var input = [{
-        "datetime": "2014-05-07 17:50:30",
-        "encoder": "https://github.com/videolan/x265",
-        "gitrev": "d2051f9544434612a105d2f5267db23018cb3454",
-        "rate": "595",
-        "sample": "out12.webm",
-        "type": "PSNR",
-        "value": "7.81451"
-    }];
-
-    /**
-     * Generate the graph in function of the selected options
-     */
-    function generateGraph(options) {
-        //http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
-        //Create a table of tuple (x,y) for each encoder type
-        var xyEncoder = new Object();
-        var key;
-        var entry;
-        var date;
-        for (var i = 0; i < input.length; i++) {
-
-            entry = input[i];
-            date = entry.datetime;//new Date(Date.parse(entry.datetime)).toUTCString();
-            //Key will represent the legend name also
-            //key = entry.sample + " : " + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")";
-            key = "<td class=legendTitle>" + entry.sample + " : </td><td class=legendInfo>" + entry.encoder + " (" + date + ") (" + mapEncoGitToLink(entry.encoder, entry.gitrev) + ")</td>";
-
-            if( !(key in xyEncoder)) {
-                xyEncoder[key] = []
-            }
-            xyEncoder[key].push([entry.rate, entry.value , {"encoder": entry.encoder, "sample": entry.sample, "datetime": date, "type": entry.type, "gitrev": input[i].gitrev}]);
-        }
-
-        //Create the dataset for the plot
-        var dataset = [];
-        for(key in xyEncoder) {
-            dataset.push({"label" : key , "data" : xyEncoder[key].sort()});
-        }
-
-        var precisionAxis = 3;
-        //https://github.com/flot/flot/blob/master/API.md
-        //Plot
-        var plot = $.plot("#placeholder1", dataset, {
-            series: {
-                lines: {
-                    show: true
-                },
-                points: {
-                    show: true
-                }
-            },
-            grid: {
-                hoverable: true,
-            },
-            xaxis: {
-                tickFormatter: function (v) {
-                    return v.toFixed(precisionAxis) + " kb/s";
-                }
-            },
-            yaxis: {
-                tickFormatter: function (v) {
-                    return v.toFixed(precisionAxis) + " dB";
-                }
-            },
-            legend: {
-                container: "#legend"
-                //margin: [-$(".legend").css("width")., 0]//[-$("<div class='graph-container'>").css( "width" ).replace("px", "")/2.8, 0]
-            }
+    //Create the dataset for the plot
+    var dataset = [];
+    for (key in xyEncoder) {
+        dataset.push({
+            "label": key,
+            "data": xyEncoder[key].sort()
         });
+    }
 
-        //Design of the tooltip
-        $("<div id='tooltip1'></div>").css({
-            position: "absolute",
-            display: "none",
-            border: "4px solid #fdd",
-            padding: "2px",
-            color: "#fff",
-            "background-color": "#000",
-            opacity: 0.80
-        }).appendTo("body");
-
-        //Event when the mouse go over a point
-        var mouseover = false;
-        var timeout;
-
-        $("#placeholder1").bind("plothover", function (event, pos, item) {
-            //Show information
-            if (item) {
-                clearTimeout(timeout);
-                var x = item.datapoint[0].toFixed(2),
-                y = item.datapoint[1].toFixed(2);
-                $("#tooltip1").html("<p><b>" + item.series.label + "</b></p><p>" + x + "kb/s" + " at " + y + "dB</p>")
-                    .css({top: item.pageY+5, left: item.pageX+5, "border-color": item.series.color})
-                    .fadeIn(200);
-            } else {
-                clearTimeout(timeout);
-                timeout = setTimeout(function(){
-                        $('#tooltip1').fadeOut(200);
-                    },750);
+    var precisionAxis = 3;
+    //https://github.com/flot/flot/blob/master/API.md
+    //Plot
+    var plot = $.plot(placeholderDiv, dataset, {
+        series: {
+            lines: {
+                show: true
+            },
+            points: {
+                show: true
             }
-        });
+        },
+        grid: {
+            hoverable: true,
+        },
+        xaxis: {
+            tickFormatter: function (v) {
+                return v.toFixed(precisionAxis) + " kb/s";
+            }
+        },
+        yaxis: {
+            tickFormatter: function (v) {
+                return v.toFixed(precisionAxis) + " dB";
+            }
+        },
+        legend: {
+            container: legendDiv
+        }
+    });
 
-        $("#tooltip1").bind("mouseenter", function (event) {
+    //Design of the tooltip
+    $("<div id=" + tooltip + "></div>").css({
+        position: "absolute",
+        display: "none",
+        border: "4px solid #fdd",
+        padding: "2px",
+        color: "#fff",
+        "background-color": "#000",
+        opacity: 0.80
+    }).appendTo("body");
+
+    //Event when the mouse go over a point
+    var mouseover = false;
+    var timeout;
+
+    $(placeholderDiv).bind("plothover", function (event, pos, item) {
+        //Show information
+        if (item) {
             clearTimeout(timeout);
-        });
+            var x = item.datapoint[0].toFixed(2),
+                y = item.datapoint[1].toFixed(2);
+            $(tooltipDiv).html("<p><b>" + item.series.label + "</b></p><p>" + x + "kb/s" + " at " + y + "dB</p>")
+                .css({
+                    top: item.pageY + 5,
+                    left: item.pageX + 5,
+                    "border-color": item.series.color
+                })
+                .fadeIn(200);
+        } else {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                $(tooltipDiv).fadeOut(200);
+            }, 750);
+        }
+    });
 
-        // Modify position of the legend
-        $('#legend').css('position','relative');
-        $('#legend').css('top',-$('#placeholder1').height());
-        $('#legend').css('right',-$('#placeholder1').width()*1.03);
-        $('#legend').css('background-color','rgb(255, 255, 255, 0.85)');
+    $(tooltipDiv).bind("mouseenter", function (event) {
+        clearTimeout(timeout);
+    });
 
-        $('#graph1').hide();
-        $('#graph1').toggle( "explode" );
-        //$( "#toggle" ).toggle( "explode" );
-        //$('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
-        //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
+    // Modify position of the legend
+    $(legendDiv).css("position", "relative");
+    $(legendDiv).css("top", -$(placeholderDiv).height());
+    $(legendDiv).css("right", -$(placeholderDiv).width() * 1.03);
+    $(legendDiv).css("background-color", "rgb(255, 255, 255, 0.85)");
+
+    $(graphDiv).hide();
+    $(graphDiv).toggle("explode");
+    //$( "#toggle" ).toggle( "explode" );
+    //$('#placeholder1 > div.legend > div, #placeholder1 > div.legend > table').css("right", -parseInt($('#placeholder1 > div.legend > div').css("width"))); 
+    //$('#placeholder1 > div.legend > table').css("background-image", "url(getPhoto.jpg)").css("background-size", "contain");
+};
+
+/**
+ * Fill the inputs fron the variable input
+ */
+
+// Source : http://stackoverflow.com/questions/3149072/determine-if-html-select-contains-a-value-in-any-of-its-child-options
+function optionExists(select, val) {
+    return $(select).find("option").filter(function () {
+        return this.value === val;
+    }).length !== 0;
+}
+
+function fillInput(data) {
+    $.each(input, function (i, v) {
+
+        if(!optionExists(sampleSelector, v.file)) {
+            $(sampleSelector).append("<option>" + v.file + "</option>");
+            $(sampleSelector).trigger('chosen:updated');
+        }
+
+        if(!optionExists(encoderSelector, v.git_url)) {
+            $(encoderSelector).append("<option>" + v.git_url + "</option>");
+            $(encoderSelector).trigger('chosen:updated');
+        }
+
+        if(!optionExists(metricSelector, v.metric)) {
+            $(metricSelector).append("<option>" + v.metric + "</option>");
+        }
+    });
+}
+
+/**
+ * Ajax Query for Execute ! button (MAIN)
+ *
+ * Reyssor: crochets, c'est dictionnaire et brackets listes je crois
+ */
+$(executeButton).click(function () {
+
+    //Create options and fill it with the different field
+    var options = {
+        "date_from": "",
+        "date_to": "",
+        "file": [],
+        "metric": "",
+        "git_url": []
     };
 
-    /**
-     * Ajax Query for Execute ! button (MAIN)
-     *
-     * Reyssor: crochets, c'est dictionnaire et brackets listes je crois
-     */
-    $( "#fetch" ).click(function() {
+    //Convertion to UNIX date time
+    options.date_from = $(dateFromInput).datetimepicker("getDate").getTime()/1000;
+    options.date_to = $(dateToInput).datetimepicker("getDate").getTime()/1000;
 
-        //Create options and fill it with the different field
-        var options = {
-            "dateInputFrom": "",
-            "dateInputTo": "",
-            "samples": [],
-            "metric": "",
-            "encoders": []
-        };
-       // alert($("#dateInputFrom").datetimepicker('getdate'));
-        options.dateInputFrom = $("#dateInputFrom").datetimepicker('getDate').toISOString();
-        options.dateInputTo = $("#dateInputTo").datetimepicker('getDate').toISOString();
+    $(sampleSelector).find("option:selected").each(function (i, selected) {
+        options.file.push(selected.label);
+    });
 
-        $('#encoderSelector option:selected').each(function(i, selected){
-            options.encoders.push(selected.label);
-        });
+    options.metric = metricSelector.options[metricSelector.selectedIndex].text;
 
-        options.metric = "metric";
+    $(encoderSelector).find("option:selected").each(function (i, selected) {
+        options.git_url.push(mapEncoder[selected.label]);
+    });
 
-        $('#sampleSelector option:selected').each(function(i, selected){
-            options.samples.push(selected.label);
-        });
-
-        jQuery.ajax({
-          type: 'GET',
-          url: 'http://lukinos.github.io/WebSize',
-          data: options,
-          success: function(data, textStatus, jqXHR) {
+    jQuery.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "http://duckyduck.gnugen.ch/webui/json",
+        data: options,
+        success: function (data, textStatus, jqXHR) {
             // La reponse du serveur est contenu dans data
             // On peut faire ce qu'on veut avec ici
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            // Une erreur s'est produite lors de la requete
-          }
-        });
 
-        generateGraph(null);
+            // TODO
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Une erreur s'est produite lors de la requete
+        }
     });
 
 });
+
+/**
+ * Dummy values
+ */
+
+ // TODO
+var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
+fillInput(input); //< --- Il faudra surement rajouter une requête pour remplir les inputs
+generateGraph(input); //< --- a placer dans la success function
