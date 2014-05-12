@@ -83,3 +83,9 @@ Improve SplitView : Add blindtest feature, add legend for video
 Axel: 1h report juju-core bug (11.05)
 Report juju-core bug upstream, describe, reproductible
 https://bugs.launchpad.net/juju-core/+bug/1316185
+
+Axel: 2h specify json spec + implement (12.05)
+Specify the API JSON for graphes, with explanation, use consistent naming of
+fields, and adapt dates format to unix timestamp
+Change DB rows and adapt webui for this, implement last features, prepare to
+deploy with vaala binaries (?)
