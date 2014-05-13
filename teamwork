@@ -89,3 +89,6 @@ Specify the API JSON for graphes, with explanation, use consistent naming of
 fields, and adapt dates format to unix timestamp
 Change DB rows and adapt webui for this, implement last features, prepare to
 deploy with vaala binaries (?)
+
+Luca: Graphs improvement 3h (12.05)
+Refactors main.js of Graph to be in harmony with the API
