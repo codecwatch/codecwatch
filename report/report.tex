@@ -9,18 +9,36 @@
 \usepackage{geometry}
 \usepackage{a4wide}
 \usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
 \fancyfoot{}
 
+\renewcommand{\contentsname}{Summary}
+
 \lhead{Axel Angel \& Luca La Spada \& Guillaume Martres}
-\rhead{Big data, project report}
+\rhead{Big data}
 \rfoot{Page \thepage\ de \pageref{LastPage}}
 \lfoot{\today}
 
 \begin{document}
-% TODO
+\input{./titlepage.tex}
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+\subsection{toto}
+
+\section{Next}
 Hello world
+
+\section{Conclusion}
 \end{document}
