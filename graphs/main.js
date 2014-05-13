@@ -12,6 +12,7 @@ var metricSelector = document.getElementById("metricSelector");
 var encoderSelector = document.getElementById("encoderSelector");
 var executeButton = document.getElementById("fetch");
 
+var thousand = 1000;
 
 var legendTitleClass = "legendTitle";
 var legendInfoClass = "legendInfo";
@@ -109,7 +110,7 @@ function generateGraph(data) {
     for (var i = 0; i < data.length; i++) {
 
         entry = data[i];
-        date = entry.date; //new Date(Date.parse(entry.date)).toUTCString();
+        date = new Date(entry.date*thousand); //Unix format To standard one;
         //Key will represent the legend name also
         //key = entry.file + " : " + entry.git_url + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")";
         key = "<td class='" + legendTitleClass + "'>" + entry.file + " : </td><td class='" + legendInfoClass + "'>" + gitUrlToEncoder(entry.git_url) + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")</td>";
@@ -265,8 +266,8 @@ $(executeButton).click(function () {
     };
 
     //Convertion to UNIX date time
-    options.date_from = $(dateFromInput).datetimepicker("getDate").getTime()/1000;
-    options.date_to = $(dateToInput).datetimepicker("getDate").getTime()/1000;
+    options.date_from = $(dateFromInput).datetimepicker("getDate").getTime()/thousand;
+    options.date_to = $(dateToInput).datetimepicker("getDate").getTime()/thousand;
 
     $(sampleSelector).find("option:selected").each(function (i, selected) {
         options.file.push(selected.label);
