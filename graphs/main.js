@@ -230,7 +230,7 @@ function optionExists(select, val) {
 }
 
 function fillInput(data) {
-    $.each(input, function (i, v) {
+    $.each(data, function (i, v) {
 
         if(!optionExists(sampleSelector, v.file)) {
             $(sampleSelector).append("<option>" + v.file + "</option>");
@@ -286,21 +286,27 @@ $(executeButton).click(function () {
         success: function (data, textStatus, jqXHR) {
             // La reponse du serveur est contenu dans data
             // On peut faire ce qu'on veut avec ici
-
-            // TODO
+            generateGraph(data); //< --- a placer dans la success function
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // Une erreur s'est produite lors de la requete
+            var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
+            generateGraph(input);
         }
     });
 
 });
 
-/**
- * Dummy values
- */
-
- // TODO
-var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
-fillInput(input); //< --- Il faudra surement rajouter une requête pour remplir les inputs
-generateGraph(input); //< --- a placer dans la success function
+jQuery.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "http://duckyduck.gnugen.ch/webui/jsonInput",
+    data: "Give me the input like that I can fill it",
+    success: function (data, textStatus, jqXHR) {
+        fillInput(data);
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
+        fillInput(input);
+    }
+});
