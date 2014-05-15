@@ -10,9 +10,28 @@ with parameters:
 receiving:
 
 git_url: git url of the encoder
-file: filename with extension (eg: bus_cif_2x.mp4)
+file: parent filename with extension (eg: bus_cif.mp4)
+realfile: real filename with extension (eg: bus_cif_2x.mp4)
 date: added date
 metric: for eg: psnr, ssim
 bitrate: bitrate of the media in kbps
 value: value for the requested metric
 git_commit: git commit of the encoder used for the sample
+
+==
+
+send GET request to webui/json_encoders
+with no parameter:
+
+receiving:
+
+a list of encoders
+
+==
+
+send GET request to webui/json_samplers
+with no parameter:
+
+receiving:
+
+a list of parent samples (suppose no transcode otherwise behavior is not undefined)
