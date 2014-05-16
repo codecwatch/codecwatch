@@ -35,6 +35,12 @@ function mapEncoGitToLink(encoder, git_commit) {
     return "<a href=" + encoder + git_commit + ">Git revison</a>";
 }
 
+/* source:
+* http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery */
+String.prototype.format = function () {
+  var args = arguments;
+  return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
+};
 
 /**
  * Activate the chosen selector (Sample and Encoders)
@@ -111,9 +117,7 @@ function generateGraph(data) {
 
         entry = data[i];
         date = new Date(entry.date*thousand); //Unix format To standard one;
-        //Key will represent the legend name also
-        //key = entry.file + " : " + entry.git_url + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")";
-        key = "<td class='" + legendTitleClass + "'>" + entry.file + " : </td><td class='" + legendInfoClass + "'>" + gitUrlToEncoder(entry.git_url) + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")</td>";
+        key = entry.git_url;
 
         if (!(key in xyEncoder)) {
             xyEncoder[key] = []
@@ -130,9 +134,16 @@ function generateGraph(data) {
     //Create the dataset for the plot
     var dataset = [];
     for (key in xyEncoder) {
+        var entry = xyEncoder[key];
+        hTitle = $('<td/>', {'class': legendTitleClass})
+            .text(entry.file);
+        hInfo = $('<td/>', {'class': legendInfoClass})
+            .text('{0} ({1}) ({2})'
+            .format(gitUrlToEncoder(entry.git_url), entry.date
+                , mapEncoGitToLink(entry.git_url, entry.git_commit)));
         dataset.push({
-            "label": key,
-            "data": xyEncoder[key].sort()
+            "label": hTitle.html() + hInfo.html(),
+            "data": entry.sort(),
         });
     }
 
