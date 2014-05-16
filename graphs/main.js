@@ -241,21 +241,28 @@ function optionExists(select, val) {
     }).length !== 0;
 }
 
-function fillInput(data) {
+function fill_encoders(data) {
     $.each(data, function (i, v) {
-
-        if(!optionExists(sampleSelector, v.file)) {
-            $(sampleSelector).append("<option>" + v.file + "</option>");
-            $(sampleSelector).trigger('chosen:updated');
-        }
-
-        if(!optionExists(encoderSelector, v.git_url)) {
-            $(encoderSelector).append("<option>" + v.git_url + "</option>");
+        if(!optionExists(encoderSelector, v)) {
+            $(encoderSelector).append("<option>" + v + "</option>");
             $(encoderSelector).trigger('chosen:updated');
         }
+    })
+}
 
-        if(!optionExists(metricSelector, v.metric)) {
-            $(metricSelector).append("<option>" + v.metric + "</option>");
+function fill_samplers(data) {
+    $.each(data, function (i, v) {
+        if(!optionExists(sampleSelector, v)) {
+            $(sampleSelector).append("<option>" + v + "</option>");
+            $(sampleSelector).trigger('chosen:updated');
+        }
+    })
+}
+
+function fill_metrics(data) {
+    $.each(data, function (i, v) {
+        if(!optionExists(metricSelector, v)) {
+            $(metricSelector).append("<option>" + v + "</option>");
         }
     });
 }
@@ -312,13 +319,27 @@ $(executeButton).click(function () {
 jQuery.ajax({
     type: "GET",
     dataType: "json",
-    url: "http://duckyduck.gnugen.ch/webui/jsonInput",
-    data: "Give me the input like that I can fill it",
+    url: "http://duckyduck.gnugen.ch/webui/json_encoders",
+    data: {},
     success: function (data, textStatus, jqXHR) {
-        fillInput(data);
+        fill_encoders(data);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-        var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
-        fillInput(input);
+        console.error(['API error encoders', jqXHR, textStatus, errorThrown]);
+        fill_encoders([]);
     }
 });
+jQuery.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "http://duckyduck.gnugen.ch/webui/json_samplers",
+    data: {},
+    success: function (data, textStatus, jqXHR) {
+        fill_samplers(data);
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        console.error(['API error samplers', jqXHR, textStatus, errorThrown]);
+        fill_samplers([]);
+    }
+});
+fill_metrics(['PSNR', 'SSIM']); // FIXME: no API
