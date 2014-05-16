@@ -92,3 +92,7 @@ deploy with vaala binaries (?)
 
 Luca: Graphs improvement 3h (12.05)
 Refactors main.js of Graph to be in harmony with the API
+
+Axel: 3h merge live repos + graph patching (15.05)
+Merge live working repos from servers into the main repo OSCIED in codecwatch,
+add scripts to automatize this task; change API, breaks, update client-side graph.js
