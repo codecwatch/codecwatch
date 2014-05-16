@@ -120,7 +120,7 @@ function generateGraph(data) {
         }
         xyEncoder[key].push([entry.bitrate, entry.value, {
             "git_url": entry.git_url,
-            "file": entry.file,
+            "source": entry.source,
             "date": date,
             "metric": entry.metric,
             "git_commit": data[i].git_commit
@@ -260,7 +260,7 @@ $(executeButton).click(function () {
     var options = {
         "date_from": "",
         "date_to": "",
-        "file": [],
+        "source": [],
         "metric": "",
         "git_url": []
     };
@@ -270,7 +270,7 @@ $(executeButton).click(function () {
     options.date_to = $(dateToInput).datetimepicker("getDate").getTime()/thousand;
 
     $(sampleSelector).find("option:selected").each(function (i, selected) {
-        options.file.push(selected.label);
+        options.source.push(selected.label);
     });
 
     options.metric = metricSelector.options[metricSelector.selectedIndex].text;
@@ -291,7 +291,7 @@ $(executeButton).click(function () {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // Une erreur s'est produite lors de la requete
-            var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","file":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
+            var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
             generateGraph(input);
         }
     });
