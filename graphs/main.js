@@ -319,27 +319,20 @@ $(executeButton).click(function () {
 jQuery.ajax({
     type: "GET",
     dataType: "json",
-    url: "http://duckyduck.gnugen.ch/webui/json_encoders",
+    url: "http://duckyduck.gnugen.ch/webui/json_gui",
     data: {},
+    xhrFields: {
+        withCredentials: true
+    },
     success: function (data, textStatus, jqXHR) {
-        fill_encoders(data);
+        fill_encoders(data.encoders);
+        fill_samplers(data.samplers);
     },
     error: function (jqXHR, textStatus, errorThrown) {
         console.error(['API error encoders', jqXHR, textStatus, errorThrown]);
         fill_encoders([]);
-    }
-});
-jQuery.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "http://duckyduck.gnugen.ch/webui/json_samplers",
-    data: {},
-    success: function (data, textStatus, jqXHR) {
-        fill_samplers(data);
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-        console.error(['API error samplers', jqXHR, textStatus, errorThrown]);
         fill_samplers([]);
     }
 });
+
 fill_metrics(['PSNR', 'SSIM']); // FIXME: no API
