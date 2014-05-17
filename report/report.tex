@@ -39,13 +39,34 @@
 
 \section{OSCIED description}
 % Why we choose oscied, architecture summary
+The goal of OSCIED is to provide a distributed cloud-powered platform to encode, publish and manage distributed resources.
+In practice it means that medias are first uploaded to the platform, then multiple encoding jobs can be dispatched to transformer machines and done in parallel.
+The resulting medias are then available in the platform for further processing or direct download by the administrator.
+Moreover these files can be published on any publisher machine for public access.
+% TODO: develop more
+For more details, we invite the reader to consult the original paper by David Fischer. % TODO: link to paper
 
 \section{Deployment}
 \subsection{OSCIED}
 % what OSCIED provides to deploy, locally works fine
+As the goal of OSCIED is to distribute computer resources across multiple machines, the platform provides high-level scripts to deploy the different roles locally or to a cloud provider.
+Behind the scene OSCIED is calling the software juju, which is a provisioning and deployment tool that supports major cloud-providers of nowadays.
+We won't describe in detail of juju works but basically it is made of two parts: the internals capable of provisioning through the cloud APIs and lots of role-specific files (charms).
+The charms are in fact description files which tells the system how to deploy the different roles: package dependencies and how to startup the services.
+For example the webui of OSCIED needs a web server thus the webui charm will tell juju to install Apache with PHP and setup the web files in the right directory.
+
+We first began to deploy a new instance of OSCIED with all roles locally on our server at EPFL, each role inside its own LXC (Linux Containers).
+There was a few days of debugging the dependencies of the handful scripts provided by OSCIED on top of juju.
+During this time, multiple patches were merged upstream: some changes were written by the author himself, some were ours.
+The local deployment was done quite easily after these steps, then we decided to deploy in parallel on our Azure instances we were given by the Big Data team.
 
 \subsection{Provisioning on Windows Azure}
 % juju, multiple instances, what went wrong
+In spite of the recently built-in support of juju for Windows Azure, OSCIED was not designed to be deployed there.
+Thus we faced our first obstacle which was to deploy there correctly.
+We had several problems with the versions of Ubuntu and juju itself, they were conflicting with OSCIED old versions.
+The charms of OSCIED were patched multiple times to integrate the changes into the new version of juju and finally we were able to use it with the latest version of Ubuntu (14.04).
+
 
 \section{Deployment}
 % modification we made, contributions (patch upstream)
