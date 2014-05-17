@@ -294,7 +294,7 @@ $(executeButton).click(function () {
     options.metric = metricSelector.options[metricSelector.selectedIndex].text;
 
     $(encoderSelector).find("option:selected").each(function (i, selected) {
-        options.git_url.push(mapEncoder[selected.label]);
+        options.git_url.push(selected.label);
     });
 
     jQuery.ajax({
