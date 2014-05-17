@@ -24,7 +24,7 @@ var legendInfoClass = "legendInfo";
 // Specify your encoder with the git revision base link
 var mapEncoder = new Object();
 mapEncoder["https://github.com/videolan/x265"] = "x265";
-mapEncoder["xTOTO"] = "https://www.google.ch/#q=";
+mapEncoder["https://www.google.ch/#q="] = "xTOTO";
 
 function gitUrlToEncoder(gitUrl) {
     return mapEncoder[gitUrl];
