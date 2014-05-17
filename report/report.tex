@@ -67,12 +67,42 @@ The local deployment was done quite easily after these steps, then we decided to
 % juju, multiple instances, what went wrong
 In spite of the recently built-in support of juju for Windows Azure, OSCIED was not designed to be deployed there.
 Thus we faced our first obstacle which was to deploy there correctly.
+We couldn't use the high-level script OSCIED provided for local deployment, thus we had to deploy by hand with juju: deploy, connect roles together and expose services.
 We had several problems with the versions of Ubuntu and juju itself, they were conflicting with OSCIED old versions.
 The charms of OSCIED were patched multiple times to integrate the changes into the new version of juju and finally we were able to use it with the latest version of Ubuntu (14.04).
 
+After deploying on multiple instances in a single Azure account, we have discovered one important limitation of juju.
+These is actually a lack of support for multiple accounts in a single juju deployment, that means it is not capable of connecting roles across different accounts yet.
+We tried to connect these roles by hand but we found out this limitation would disturb how one can deploy OSCIED.
+By lack of time, we decided to cut off our experiment over Azure and focused our effort on writing what we needed on our local service.
 
 \section{Adaptations}
 % modification we made, how we changed
+
+\subsection{Code modification}
+% TODO: Axel
+To integrate our goals into OSCIED we decided to develop directly into the live containers, we had direct feedback of our modifications.
+Multiple roles were affected: Orchestra, Transformer and Webui.
+We needed to collect statistics such as the video bitrate, quality measures such as PSNR/SSIM, media source such as the git repository and commit, directly into the stored metadata of the media at encoding time (these are pushed into the MongDB of the Orchestra role after completion)
+
+We had first to understand the internal implementation: hierarchy of files, the classes and how they all work together.
+This took us some time and finally we were able to modify exactly what we wanted.
+There were multiple obstacles due to the dynamic nature of Python such as multiple level of indirections of the API (callbacks) and the lack of type description, these components are lazily coupled and they break only at runtime after a job.
+Thus we had to debug our code in live by looking at the logged files and iterate until we had what we wanted.
+
+First we decided to modify the Transformer code where the encoding process is triggered after which the metadata are computed.
+It is written in Python and backed up by Celery, thus the call are all asynchronous and a callback is called.
+We modified the encoding target (ffmpeg) to collect more metadata (called measures), these are computed by specialized programs of the Daala project.
+
+Secondly we had to modify Orchestra to accept these measures and put it as regular metadata into the database. Some part of the code base is shared with the Transformer and thus are written in Python but backed up by Flask (a light server designed for serving APIs).
+
+Thirdly the web interface Webui had to modified to display these informations, this part is written in PHP.
+Columns were added in the media pannel of the interface in order to show the results of our tests and then for the final users so he can compare numeric values directly.
+As textual information is not sufficient, we wrote a small API that serves these measures directly to a separate interface with graphs.
+We had to integrate our work with the PHP framework of the Webui (called CodeIgniter), that is: register new routes and ensure we provide a json output correctly to interpolate with Javascript (see the next section).
+
+\subsection{Graphs and statistics visualizations}
+% TODO: Lucas
 
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
