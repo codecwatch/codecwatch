@@ -102,7 +102,9 @@ $(dateFromInput).datetimepicker({
     controlType: myControl,
     timeFormat: 'HH:mm:ss',
 });
-$(dateFromInput).datetimepicker('setDate', (new Date()));
+var dateFrom = new Date();
+dateFrom.setDate(dateFrom.getDate() - 7); //Remove 7 days to the current date
+$(dateFromInput).datetimepicker('setDate', dateFrom);
 
 $(dateToInput).datetimepicker({
     controlType: myControl,
