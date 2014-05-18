@@ -32,7 +32,15 @@ function gitUrlToEncoder(gitUrl) {
 
 // Combine a git revision with his base link
 function mapEncoGitToLink(encoder, git_commit) {
-    return "<a href=" + encoder + git_commit + ">Git revison</a>";
+    return encoder + '/commit/' + git_commit;
+}
+
+// Date format displayed
+function formatDate(date) {
+    return '{0} {1}'.format(
+        date.toLocaleDateString(),
+        date.toLocaleTimeString()
+    );
 }
 
 /* source:
@@ -110,9 +118,8 @@ function generateGraph(data) {
     //http://stackoverflow.com/questions/9150964/identifying-hovered-point-with-flot
     //Create a table of tuple (x,y) for each encoder metric
 
-
-    /* Axel non-working code
     var xyEncoder = new Object();
+    var encoderLabel = new Object();
     var key;
     var entry;
     var date;
@@ -120,15 +127,25 @@ function generateGraph(data) {
 
         entry = data[i];
         date = new Date(entry.date*thousand); //Unix format To standard one;
-        key = entry.git_url;
+        key = [entry.git_url, entry.git_commit, entry.source];
 
         if (!(key in xyEncoder)) {
             xyEncoder[key] = [];
+
+            hTitle = $('<td/>', {'class': legendTitleClass})
+                .text('{0}: '.format(entry.source));
+            hGitA = $('<a/>', {
+                'href': mapEncoGitToLink(entry.git_url, entry.git_commit),
+            }).text(gitUrlToEncoder(entry.git_url));
+            hInfo = $('<td/>', {'class': legendInfoClass})
+                .append(hGitA)
+                .append(' ({0})'.format(formatDate(date)))
+            encoderLabel[key] = hTitle.html() + hInfo.html();
         }
+
         xyEncoder[key].push([entry.bitrate, entry.value, {
             "git_url": entry.git_url,
             "source": entry.source,
-            "date": date,
             "metric": entry.metric,
             "git_commit": data[i].git_commit
         }]);
@@ -138,52 +155,11 @@ function generateGraph(data) {
     var dataset = [];
     for (key in xyEncoder) {
         var entry = xyEncoder[key];
-        hTitle = $('<td/>', {'class': legendTitleClass})
-            .text(entry.file);
-        hInfo = $('<td/>', {'class': legendInfoClass})
-            .text('{0} ({1}) ({2})'
-            .format(gitUrlToEncoder(entry.git_url), entry.date
-                , mapEncoGitToLink(entry.git_url, entry.git_commit)));
         dataset.push({
-            "label": hTitle.html() + hInfo.html(),
+            "label": encoderLabel[key],
             "data": entry.sort(),
         });
-    }*/
-
-    var xyEncoder = new Object();
-    var key;
-    var entry;
-    var date;
-    for (var i = 0; i < data.length; i++) {
-
-        entry = data[i];
-        date = new Date(entry.date*thousand); //Unix format To standard one;
-        //Key will represent the legend name also
-        //key = entry.file + " : " + entry.git_url + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")";
-        key = "<td class='" + legendTitleClass + "'>" + entry.source + " : </td><td class='" + legendInfoClass + "'>" + gitUrlToEncoder(entry.git_url) + " (" + date + ") (" + mapEncoGitToLink(entry.git_url, entry.git_commit) + ")</td>";
-
-        if (!(key in xyEncoder)) {
-            xyEncoder[key] = []
-        }
-        xyEncoder[key].push([entry.bitrate, entry.value, {
-            "git_url": entry.git_url,
-            "source": entry.source,
-            "date": date,
-            "metric": entry.metric,
-            "git_commit": data[i].git_commit
-        }]);
     }
-
-    //Create the dataset for the plot
-    var dataset = [];
-    for (key in xyEncoder) {
-        dataset.push({
-            "label": key,
-            "data": xyEncoder[key].sort()
-        });
-    }
-
-
 
     var precisionAxis = 3;
     //https://github.com/flot/flot/blob/master/API.md
