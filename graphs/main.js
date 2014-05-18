@@ -142,7 +142,7 @@ function generateGraph(data) {
             hInfo = $('<td/>', {'class': legendInfoClass})
                 .append(hGitA)
                 .append(' ({0})'.format(formatDate(date)))
-            encoderLabel[key] = hTitle.html() + hInfo.html();
+            encoderLabel[key] = hTitle[0].outerHTML + hInfo[0].outerHTML;
         }
 
         // Each point is bitrate-value pair
