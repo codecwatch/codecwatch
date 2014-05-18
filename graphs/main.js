@@ -120,22 +120,24 @@ function generateGraph(data) {
 
     var xyEncoder = new Object();
     var encoderLabel = new Object();
-    var key;
-    var entry;
-    var date;
+
     for (var i = 0; i < data.length; i++) {
 
-        entry = data[i];
-        date = new Date(entry.date*thousand); //Unix format To standard one;
-        key = [entry.git_url, entry.git_commit, entry.source];
+        var entry = data[i];
+        var date = new Date(entry.date*thousand); //Unix format To standard one;
+        // Each key creates a new line in the graph
+        var key = [entry.git_url, entry.git_commit, entry.source];
 
+        // Create a corresponding label for this graph line
         if (!(key in xyEncoder)) {
             xyEncoder[key] = [];
 
+            // How the label is displayed
             hTitle = $('<td/>', {'class': legendTitleClass})
                 .text('{0}: '.format(entry.source));
             hGitA = $('<a/>', {
                 'href': mapEncoGitToLink(entry.git_url, entry.git_commit),
+                'title': entry.git_commit,
             }).text(gitUrlToEncoder(entry.git_url));
             hInfo = $('<td/>', {'class': legendInfoClass})
                 .append(hGitA)
@@ -143,15 +145,11 @@ function generateGraph(data) {
             encoderLabel[key] = hTitle.html() + hInfo.html();
         }
 
-        xyEncoder[key].push([entry.bitrate, entry.value, {
-            "git_url": entry.git_url,
-            "source": entry.source,
-            "metric": entry.metric,
-            "git_commit": data[i].git_commit
-        }]);
+        // Each point is bitrate-value pair
+        xyEncoder[key].push([entry.bitrate, entry.value]);
     }
 
-    //Create the dataset for the plot
+    // Create the dataset for the plot
     var dataset = [];
     for (key in xyEncoder) {
         var entry = xyEncoder[key];
