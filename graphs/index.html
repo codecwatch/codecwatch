@@ -16,11 +16,6 @@
     <script src="./3rdparty/chosen/chosen.jquery.min.js"></script>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="page-header text-center">
-        <h1>CodecWatch graphs</h1>
-      </div>
-
       <table class="table-input">
          <tr>
           <td>Date Time:</td>
@@ -51,16 +46,12 @@
 
       <br>
 
-      <button id="fetch" type="button" class="btn btn-lg btn-default">Execute !</button>
+      <button id="fetch" type="button" class="float-right btn btn-lg btn-default">Execute !</button>
       <div id="content">
         <div id="graph1" class="graph-container">
           <div id="placeholder1" class="graph-placeholder"></div>
           <div id="legend"></div>
         </div>
-        <!--
-            <div class="graph-container">
-              <div id="placeholder2" class="graph-placeholder"></div>
-            </div> -->
       </div>
 
       <script src="./main.js"></script>
