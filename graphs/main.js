@@ -317,12 +317,10 @@ $(executeButton).click(function () {
         success: function (data, textStatus, jqXHR) {
             // La reponse du serveur est contenu dans data
             // On peut faire ce qu'on veut avec ici
-            //generateGraph(data); //< --- a placer dans la success function
+            generateGraph(data); //< --- a placer dans la success function
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            // Une erreur s'est produite lors de la requete
-            //var input = [{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out12.webm","date":"2014-05-07 17:50:30","metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out15.webm","date":"2014-05-11 13:24:43","metric":"PSNR","bitrate":"791","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","filename":"out16.webm","date":1399814829,"metric":"PSNR","bitrate":"595","value":"7.81451","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}];
-            //generateGraph(input);
+            console.error(['API error json', jqXHR, textStatus, errorThrown]);
         }
     });
 
@@ -337,16 +335,12 @@ jQuery.ajax({
         withCredentials: true
     },
     success: function (data, textStatus, jqXHR) {
-        //fill_encoders(data.encoders);
-        //fill_samplers(data.samplers);
+        fill_encoders(data.encoders);
+        fill_samplers(data.samplers);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-        //console.error(['API error encoders', jqXHR, textStatus, errorThrown]);
-        //fill_encoders([]);
-        //fill_samplers([]);
+        console.error(['API error encoders', jqXHR, textStatus, errorThrown]);
     }
 });
 
-//fill_metrics(['PSNR', 'SSIM']); // FIXME: no API
-var data = [{"git_url":"https:\/\/github.com\/videolan\/x265","source":"bus_cif.webm","filename":"cronjob_1400356637.webm","url":"http:\/\/duckyduck.gnugen.ch\/webui\/media\/force_download\/095b8df9-f339-4c5e-95b5-3b289a943962","date":1400356666,"metric":"psnr","value":"7.81451","bitrate":"595","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","source":"bus_cif.webm","filename":"out12.webm","url":"http:\/\/duckyduck.gnugen.ch\/webui\/media\/force_download\/15e7d73f-596f-44c8-af8a-af6667260060","date":1399477830,"metric":"psnr","value":"7.81451","bitrate":"595","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","source":"bus_cif.webm","filename":"out16.webm","url":"http:\/\/duckyduck.gnugen.ch\/webui\/media\/force_download\/e9395030-713e-48a7-93be-1e2d960d0ecd","date":1399814829,"metric":"psnr","value":"7.81451","bitrate":"595","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"},{"git_url":"https:\/\/github.com\/videolan\/x265","source":"bus_cif.webm","filename":"out18.webm","url":"http:\/\/duckyduck.gnugen.ch\/webui\/media\/force_download\/7100c742-b732-4d8c-80ff-0dd3c756e129","date":1399930223,"metric":"psnr","value":"7.81451","bitrate":"595","git_commit":"d2051f9544434612a105d2f5267db23018cb3454"}]
-generateGraph(data);
+fill_metrics(['PSNR', 'SSIM']); // FIXME: no API
