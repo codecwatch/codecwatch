@@ -235,7 +235,7 @@ function generateGraph(data) {
     // Modify position of the legend
     $(legendDiv).css("position", "relative");
     $(legendDiv).css("top", -$(placeholderDiv).height());
-    $(legendDiv).css("right", -$(placeholderDiv).width() * 1.03);
+    $(legendDiv).css("right", -$(placeholderDiv).width() * 0.97);
     $(legendDiv).css("background-color", "rgb(255, 255, 255, 0.85)");
 
     $(graphDiv).hide();
