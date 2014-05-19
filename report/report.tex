@@ -95,10 +95,10 @@ files in the right directory.
 We first began to deploy a new instance of OSCIED with all roles locally on our
 server at EPFL, each role inside its own LXC (linux container).  This involved
 numerous bug fixes to OSCIED which where then merged upstream, see
-\url{https://github.com/ebu/OSCIED/pulls?direction=desc&page=1&sort=created&state=closed},
-\url{https://github.com/davidfischer-ch/OSCIED/pulls?direction=desc&page=1&sort=created&state=closed}
+\cite{ebu_merge1},
+\cite{oscied_merge1}
 and
-\url{https://github.com/davidfischer-ch/pytoolbox/pulls?direction=desc&page=1&sort=created&state=closed}.
+\cite{pytoolbox_merge1}.
 
 \subsection{Provisioning on Microsoft Azure}
 As video encoding is a very CPU intensive task, we had planned to use our
@@ -109,7 +109,7 @@ the removal of the -sameq argument from ffmpeg). This was completed
 successfully, but unfortunately, we did not manage to properly deploy OSCIED on
 Azure on time. This is due mostly to the quite complex and fragile scripts that
 are normally used to deploy OSCIED and bugs in juju itself, like
-\url{https://bugs.launchpad.net/juju-core/+bug/1316185} which we reported ourselves.
+\cite{juju_bug1} which we reported ourselves.
 
 %\section{Adaptations}
 % modification we made, how we changed
