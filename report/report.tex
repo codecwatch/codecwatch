@@ -111,7 +111,7 @@ Azure on time. This is due mostly to the quite complex and fragile scripts that
 are normally used to deploy OSCIED and bugs in juju itself, like
 \url{https://bugs.launchpad.net/juju-core/+bug/1316185} which we reported ourselves.
 
-\section{Adaptations}
+%\section{Adaptations}
 % modification we made, how we changed
 
 \subsection{Code modification}
@@ -124,7 +124,7 @@ as the git repository and commit, directly into the stored metadata of the media
 at encoding time (these are pushed into the MongDB of the Orchestra role after
 completion)
 
-We had first to understand the internal implementation: hierarchy of files, the
+We first had to understand the internal implementation: hierarchy of files, the
 classes and how they all work together.  This took us some time and finally we
 were able to modify exactly what we wanted.  There were multiple obstacles due
 to the dynamic nature of Python such as multiple level of indirections of the
@@ -146,9 +146,9 @@ the Transformer and thus are written in Python but backed up by Flask (a light
 server designed for serving APIs).
 
 Thirdly the web interface Webui had to modified to display these informations,
-this part is written in PHP.  Columns were added in the media pannel of the
-interface in order to show the results of our tests and then for the final users
-so he can compare numeric values directly.  As textual information is not
+this part is written in PHP.  Columns were added in the media panel of the
+interface in order to show the results of our tests and for the final users
+so that they can compare numeric values directly.  As textual information is not
 sufficient, we wrote a small API that serves these measures directly to a
 separate interface with graphs.  We had to integrate our work with the PHP
 framework of the Webui (called CodeIgniter), that is: register new routes and
