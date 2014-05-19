@@ -14,6 +14,7 @@
 \usepackage{graphicx}
 \usepackage{lastpage}
 
+\usepackage{cite}
 \usepackage{hyperref}
 
 \usepackage{fancyhdr}
@@ -38,9 +39,9 @@
 \section{Introduction}
 % Project presentation and goals
 New and emerging video codec standards like
-HEVC/H.265~\footnote{\url{http://hevc.info/}} (MPEG standard),
-VP9~\footnote{\url{http://www.webmproject.org/vp9/}} (open, royalty-free codec
-developed by Google) or Daala~\footnote{\url{http://xiph.org/daala}} (research
+HEVC/H.265~ \cite{hevc} (MPEG standard),
+VP9~ \cite{vp9} (open, royalty-free codec
+developed by Google) or Daala~ \cite{daala} (research
 project developed in the open by Mozilla) have caused a great increase of
 activity around open source video encoders for these formats. The main challenge
 of any encoder is to provide the greatest visual quality at acceptable file size
@@ -53,13 +54,13 @@ which provides the following functionalities:
 \item Do nightly encode of a standard set of video clips using the latest git
 revision of various open source encoders, at various bitrates.
 \item Display in graph forms various metrics (like
-PSNR~\footnote{\url{https://en.wikipedia.org/wiki/PSNR}} or
-SSIM~\footnote{\url{https://en.wikipedia.org/wiki/SSIM}})
+    PSNR~ \cite{psnr} or
+    SSIM~ \cite{ssim})
 \item As quality metrics are only an approximation of the actual visual quality,
 provide a way to compare the encoded videos side-by-side.
 \end{itemize} Instead of starting from scratch, we implemented CodecWatch by
 extending the existing open source encoding platform
-OSCIED~\footnote{\url{https://github.com/davidfischer-ch/OSCIED}}.
+OSCIED~ \cite{oscied}.
 
 \section{OSCIED description}
 % Why we choose oscied, architecture summary
@@ -72,7 +73,7 @@ administrator.  Moreover these files can be published on any publisher machine
 for public access.
 % TODO: develop more
 For more details, we invite the reader to consult the original paper by David
-Fischer~\footnote{\url{https://github.com/davidfischer-ch/OSCIED/blob/master/docs/david/master_thesis/MA_DavidFischer_OSCIED_V2.pdf?raw=true}}.
+Fischer~\cite{df_thesis}.
 
 % Explain we had to understand how OSCIED works, architecture complexity, it's enormous
 
@@ -157,7 +158,7 @@ the next section).
 \subsection{The Awesome CodecWatch Graph}
 A new feature has been added: The Awesome CodecWatch Graph. It is a plot that shows you the evolution of the quality of different encoder on some specific video called sample. These results are retrieved from the OSCIED database. The graph gives you the possibility to filter the result by sample, by encoder, by metric. Moreover, you can set interval to retrieve only encoding that have been done in a specific range of dates.
 
-The graph is coded principally in HTML, Javascript and CSS. It uses different Javascript plugins: Chosen~\footnote{\url{http://harvesthq.github.io/chosen/}} that change the default style of a multiselect in something with more hype, jQueryUI~\footnote{\url{http://jqueryui.com/}}, TimePicker~\footnote{\url{http://trentrichardson.com/examples/timepicker/}} that improves the default datepicker of jQueryUI in a more detailed one (you can set even the second), jQuery~\footnote{\url{http://jquery.com/}} and flotcharts~\footnote{\url{http://www.flotcharts.org/}} that is a jQuery plugin used to create plots.
+The graph is coded principally in HTML, Javascript and CSS. It uses different Javascript plugins: Chosen~ \cite{harvesthq_chosen} that change the default style of a multiselect in something with more hype, jQueryUI~ \cite{jqueryui}, TimePicker~ \cite{timepicker} that improves the default datepicker of jQueryUI in a more detailed one (you can set even the second), jQuery~ \cite{jquery} and flotcharts~ \cite{flotchart} that is a jQuery plugin used to create plots.
 
 An screenshot of a dummy graph is displayed in figure~\ref{fig:graph1}. The graph displays in the X-axis the bitrate and in the Y-axis the decibel of videos. If you pass your mouse over a point a tooltip appears with the exact values of the point.
 
@@ -169,7 +170,7 @@ An screenshot of a dummy graph is displayed in figure~\ref{fig:graph1}. The grap
 \end{figure}
 
 \subsection{SplitView}
-We included to the Webui of OSCIED the well-know visual comparator SplitView~\footnote{\url{https://github.com/smarter/splitview}}. Furthermore, we add a feature him. We have called it \emph{The Blind Test}. The blind test is all about the button that we can see in figure~\ref{fig:blindtest}. When we click it, the green square around the information about the videos becomes invisible and the two videos are swap with probability $0.5$. Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
+We included to the Webui of OSCIED the well-know visual comparator SplitView~ \cite{splitview}. Furthermore, we add a feature him. We have called it \emph{The Blind Test}. The blind test is all about the button that we can see in figure~\ref{fig:blindtest}. When we click it, the green square around the information about the videos becomes invisible and the two videos are swap with probability $0.5$. Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
 
 \begin{figure}[!h]
 	\centering
@@ -185,5 +186,9 @@ We included to the Webui of OSCIED the well-know visual comparator SplitView~\fo
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
 % what we did is useful, blabla
+
+\appendix
+\bibliography{report}{}
+\bibliographystyle{plain}
 
 \end{document}
