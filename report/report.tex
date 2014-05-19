@@ -37,39 +37,39 @@
 
 \section{Introduction}
 % Project presentation and goals
-  New and emerging video codec standards like
+New and emerging video codec standards like
 HEVC/H.265~\footnote{\url{http://hevc.info/}} (MPEG standard),
-VP9~\footnote{\url{http://www.webmproject.org/vp9/}} (open, royalty-free codec developed
-by Google) or Daala~\footnote{\url{http://xiph.org/daala}} (research project developed
-in the open by Mozilla) have caused a great increase of activity around open
-source video encoders for these formats. The main challenge of any encoder is to
-provide the greatest visual quality at acceptable file size and encoding
-speed. This means that all these projects must measure their output quality and
-compare it with the state of the art. It would be a great boost to productivity
-for developers if an open source project to compare and track the quality of
-these evolving encoders existed. This is the goal of CodecWatch, which provides
-the following functionalities:
+VP9~\footnote{\url{http://www.webmproject.org/vp9/}} (open, royalty-free codec
+developed by Google) or Daala~\footnote{\url{http://xiph.org/daala}} (research
+project developed in the open by Mozilla) have caused a great increase of
+activity around open source video encoders for these formats. The main challenge
+of any encoder is to provide the greatest visual quality at acceptable file size
+and encoding speed. This means that all these projects must measure their output
+quality and compare it with the state of the art. It would be a great boost to
+productivity for developers if an open source project to compare and track the
+quality of these evolving encoders existed. This is the goal of CodecWatch,
+which provides the following functionalities:
 \begin{itemize}
-\item
-  Do nightly encode of a standard set of video clips using the latest git
-  revision of various open source encoders, at various bitrates.
-\item
-  Display in graph forms various metrics (like
-  PSNR~\footnote{\url{https://en.wikipedia.org/wiki/PSNR}} or
-  SSIM~\footnote{\url{https://en.wikipedia.org/wiki/SSIM}})
-\item
-  As quality metrics are only an approximation of the actual visual quality,
-  provide a way to compare the encoded videos side-by-side.
-\end{itemize}
-Instead of starting from scratch, we implemented CodecWatch by extending the
-existing open source encoding platform OSCIED~\footnote{\url{https://github.com/davidfischer-ch/OSCIED}}.
+\item Do nightly encode of a standard set of video clips using the latest git
+revision of various open source encoders, at various bitrates.
+\item Display in graph forms various metrics (like
+PSNR~\footnote{\url{https://en.wikipedia.org/wiki/PSNR}} or
+SSIM~\footnote{\url{https://en.wikipedia.org/wiki/SSIM}})
+\item As quality metrics are only an approximation of the actual visual quality,
+provide a way to compare the encoded videos side-by-side.
+\end{itemize} Instead of starting from scratch, we implemented CodecWatch by
+extending the existing open source encoding platform
+OSCIED~\footnote{\url{https://github.com/davidfischer-ch/OSCIED}}.
 
 \section{OSCIED description}
 % Why we choose oscied, architecture summary
-The goal of OSCIED is to provide a distributed cloud-powered platform to encode, publish and manage distributed resources.
-In practice it means that medias are first uploaded to the platform, then multiple encoding jobs can be dispatched to transformer machines and done in parallel.
-The resulting medias are then available in the platform for further processing or direct download by the administrator.
-Moreover these files can be published on any publisher machine for public access.
+The goal of OSCIED is to provide a distributed cloud-powered platform to encode,
+publish and manage distributed resources.  In practice it means that medias are
+first uploaded to the platform, then multiple encoding jobs can be dispatched to
+transformer machines and done in parallel.  The resulting medias are then
+available in the platform for further processing or direct download by the
+administrator.  Moreover these files can be published on any publisher machine
+for public access.
 % TODO: develop more
 For more details, we invite the reader to consult the original paper by David
 Fischer~\footnote{\url{https://github.com/davidfischer-ch/OSCIED/blob/master/docs/david/master_thesis/MA_DavidFischer_OSCIED_V2.pdf?raw=true}}.
@@ -79,56 +79,89 @@ Fischer~\footnote{\url{https://github.com/davidfischer-ch/OSCIED/blob/master/doc
 \section{Deployment}
 \subsection{OSCIED}
 % what OSCIED provides to deploy, locally works fine
-As the goal of OSCIED is to distribute computer resources across multiple machines, the platform provides high-level scripts to deploy the different roles locally or to a cloud provider.
-Behind the scene OSCIED uses juju, a provisioning and deployment tool that supports major cloud providers.
-We won't describe in detail how juju works but basically it is made of two parts: the internals capable of provisioning through the cloud APIs and lots of role-specific files (charms).
-The charms are in fact description files which tells the system how to deploy the different roles: package dependencies and how to startup the services.
-For example the webui of OSCIED needs a web server thus the webui charm will tell juju to install Apache with PHP and setup the web files in the right directory.
+As the goal of OSCIED is to distribute computer resources across multiple
+machines, the platform provides high-level scripts to deploy the different roles
+locally or to a cloud provider.  Behind the scene OSCIED uses juju, a
+provisioning and deployment tool that supports major cloud providers.  We won't
+describe in detail how juju works but basically it is made of two parts: the
+internals capable of provisioning through the cloud APIs and lots of
+role-specific files (charms).  The charms are in fact description files which
+tells the system how to deploy the different roles: package dependencies and how
+to startup the services.  For example the webui of OSCIED needs a web server
+thus the webui charm will tell juju to install Apache with PHP and setup the web
+files in the right directory.
 
 We first began to deploy a new instance of OSCIED with all roles locally on our
-server at EPFL, each role inside its own LXC (linux container).
-There was a few days of debugging the dependencies of the handful scripts provided by OSCIED on top of juju.
-During this time, multiple patches were merged upstream: some changes were written by the author himself, some were ours.
-The local deployment was done quite easily after these steps, then we decided to deploy in parallel on our Azure instances we were given by the Big Data team.
+server at EPFL, each role inside its own LXC (linux container).  There was a few
+days of debugging the dependencies of the handful scripts provided by OSCIED on
+top of juju.  During this time, multiple patches were merged upstream: some
+changes were written by the author himself, some were ours.  The local
+deployment was done quite easily after these steps, then we decided to deploy in
+parallel on our Azure instances we were given by the Big Data team.
 
 \subsection{Provisioning on Windows Azure}
 % juju, multiple instances, what went wrong
-In spite of the recently built-in support of juju for Windows Azure, OSCIED was not designed to be deployed there.
-Thus we faced our first obstacle which was to deploy there correctly.
-We couldn't use the high-level script OSCIED provided for local deployment, thus we had to deploy by hand with juju: deploy, connect roles together and expose services.
-We had several problems with the versions of Ubuntu and juju itself, they were conflicting with OSCIED old versions.
-The charms of OSCIED were patched multiple times to integrate the changes into the new version of juju and finally we were able to use it with the latest version of Ubuntu (14.04).
+In spite of the recently built-in support of juju for Windows Azure, OSCIED was
+not designed to be deployed there.  Thus we faced our first obstacle which was
+to deploy there correctly.  We couldn't use the high-level script OSCIED
+provided for local deployment, thus we had to deploy by hand with juju: deploy,
+connect roles together and expose services.  We had several problems with the
+versions of Ubuntu and juju itself, they were conflicting with OSCIED old
+versions.  The charms of OSCIED were patched multiple times to integrate the
+changes into the new version of juju and finally we were able to use it with the
+latest version of Ubuntu (14.04).
 
-After deploying on multiple instances in a single Azure account, we have discovered one important limitation of juju.
-These is actually a lack of support for multiple accounts in a single juju deployment, that means it is not capable of connecting roles across different accounts yet.
-We tried to connect these roles by hand but we found out this limitation would disturb how one can deploy OSCIED.
-By lack of time, we decided to cut off our experiment over Azure and focused our effort on writing what we needed on our local service.
+After deploying on multiple instances in a single Azure account, we have
+discovered one important limitation of juju.  These is actually a lack of
+support for multiple accounts in a single juju deployment, that means it is not
+capable of connecting roles across different accounts yet.  We tried to connect
+these roles by hand but we found out this limitation would disturb how one can
+deploy OSCIED.  By lack of time, we decided to cut off our experiment over Azure
+and focused our effort on writing what we needed on our local service.
 
 \section{Adaptations}
 % modification we made, how we changed
 
 \subsection{Code modification}
 % TODO: Axel
-To integrate our goals into OSCIED we decided to develop directly into the live containers, we had direct feedback of our modifications.
-Multiple roles were affected: Orchestra, Transformer and Webui.
-We needed to collect statistics such as the video bitrate, quality measures such as PSNR/SSIM, media source such as the git repository and commit, directly into the stored metadata of the media at encoding time (these are pushed into the MongDB of the Orchestra role after completion)
+To integrate our goals into OSCIED we decided to develop directly into the live
+containers, we had direct feedback of our modifications.  Multiple roles were
+affected: Orchestra, Transformer and Webui.  We needed to collect statistics
+such as the video bitrate, quality measures such as PSNR/SSIM, media source such
+as the git repository and commit, directly into the stored metadata of the media
+at encoding time (these are pushed into the MongDB of the Orchestra role after
+completion)
 
-We had first to understand the internal implementation: hierarchy of files, the classes and how they all work together.
-This took us some time and finally we were able to modify exactly what we wanted.
-There were multiple obstacles due to the dynamic nature of Python such as multiple level of indirections of the API (callbacks) and the lack of type description, these components are lazily coupled and they break only at runtime after a job.
-Thus we had to debug our code in live by looking at the logged files and iterate until we had what we wanted.
+We had first to understand the internal implementation: hierarchy of files, the
+classes and how they all work together.  This took us some time and finally we
+were able to modify exactly what we wanted.  There were multiple obstacles due
+to the dynamic nature of Python such as multiple level of indirections of the
+API (callbacks) and the lack of type description, these components are lazily
+coupled and they break only at runtime after a job.  Thus we had to debug our
+code in live by looking at the logged files and iterate until we had what we
+wanted.
 
-First we decided to modify the Transformer code where the encoding process is triggered after which the metadata are computed.
-It is written in Python and backed up by Celery, thus the call are all asynchronous and a callback is called.
-We modified the encoding target (ffmpeg) to collect more metadata (called
-measures), these are computed by specialized programs of the Daala project.
+First we decided to modify the Transformer code where the encoding process is
+triggered after which the metadata are computed.  It is written in Python and
+backed up by Celery, thus the call are all asynchronous and a callback is
+called.  We modified the encoding target (ffmpeg) to collect more metadata
+(called measures), these are computed by specialized programs of the Daala
+project.
 
-Secondly we had to modify Orchestra to accept these measures and put it as regular metadata into the database. Some part of the code base is shared with the Transformer and thus are written in Python but backed up by Flask (a light server designed for serving APIs).
+Secondly we had to modify Orchestra to accept these measures and put it as
+regular metadata into the database. Some part of the code base is shared with
+the Transformer and thus are written in Python but backed up by Flask (a light
+server designed for serving APIs).
 
-Thirdly the web interface Webui had to modified to display these informations, this part is written in PHP.
-Columns were added in the media pannel of the interface in order to show the results of our tests and then for the final users so he can compare numeric values directly.
-As textual information is not sufficient, we wrote a small API that serves these measures directly to a separate interface with graphs.
-We had to integrate our work with the PHP framework of the Webui (called CodeIgniter), that is: register new routes and ensure we provide a json output correctly to interpolate with Javascript (see the next section).
+Thirdly the web interface Webui had to modified to display these informations,
+this part is written in PHP.  Columns were added in the media pannel of the
+interface in order to show the results of our tests and then for the final users
+so he can compare numeric values directly.  As textual information is not
+sufficient, we wrote a small API that serves these measures directly to a
+separate interface with graphs.  We had to integrate our work with the PHP
+framework of the Webui (called CodeIgniter), that is: register new routes and
+ensure we provide a json output correctly to interpolate with Javascript (see
+the next section).
 
 \subsection{The Awesome CodecWatch Graph}
 A new feature has been added: The Awesome CodecWatch Graph. It is a plot that shows you the evolution of the quality of different encoder on some specific video called sample. These results are retrieved from the OSCIED database. The graph gives you the possibility to filter the result by sample, by encoder, by metric. Moreover, you can set interval to retrieve only encoding that have been done in a specific range of dates.
