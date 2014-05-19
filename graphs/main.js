@@ -158,7 +158,7 @@ function generateGraph(data) {
         var entry = xyEncoder[key];
         dataset.push({
             "label": encoderLabel[key],
-            "data": entry.sort(),
+            "data": entry.sort(function(a, b){return a[0]-b[0]}),
         });
     }
 
