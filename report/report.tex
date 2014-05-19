@@ -101,8 +101,33 @@ Columns were added in the media pannel of the interface in order to show the res
 As textual information is not sufficient, we wrote a small API that serves these measures directly to a separate interface with graphs.
 We had to integrate our work with the PHP framework of the Webui (called CodeIgniter), that is: register new routes and ensure we provide a json output correctly to interpolate with Javascript (see the next section).
 
-\subsection{Graphs and statistics visualizations}
-% TODO: Lucas
+\subsection{The Awesome CodecWatch Graph}
+A new feature has been added: The Awesome CodecWatch Graph. It is a plot that shows you the evolution of the quality of different encoder on some specific video called sample. These results are retrieved from the OSCIED database. The graph gives you the possibility to filter the result by sample, by encoder, by metric. Moreover, you can set interval to retrieve only encoding that have been done in a specific range of dates.
+
+The graph is coded principally in HTML~\footnote{\url{http://www.w3.org/html/}}, Javascript~\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}} and CSS~\footnote{\url{http://www.w3.org/Style/CSS/}}. It uses different Javascript plugins: Chosen~\footnote{\url{http://harvesthq.github.io/chosen/}} that change the default style of a multiselect in something with more hype, jQueryUI~\footnote{\url{http://jqueryui.com/}}, TimePicker~\footnote{\url{http://trentrichardson.com/examples/timepicker/}} that improves the default datepicker of jQueryUI in a more detailed one (you can set even the second), jQuery~\footnote{\url{http://jquery.com/}} and flotcharts~\footnote{\url{http://www.flotcharts.org/}} that is a jQuery plugin used to create plots.
+
+An screenshot of a dummy graph is displayed in figure~\ref{fig:graph1}. The graph displays in the X-axis the bitrate and in the Y-axis the decibel of videos. If you pass your mouse over a point a tooltip appears with the exact values of the point.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/graph1.png}
+	\caption{The Awesome CodecWatch Graph PROVISOIRE}
+	\label{fig:graph1}
+\end{figure}
+
+\subsection{SplitView}
+We included to the Webui of OSCIED the well-know visual comparator SplitView~\footnote{\url{https://github.com/smarter/splitview}}. Furthermore, we add a feature him. We have called it \emph{The Blind Test}. The blind test is all about the button that we can see in figure~\ref{fig:blindtest}. When we click it, the green square around the information about the videos becomes invisible and the two videos are swap with probability $0.5$. Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/graph1.png}
+	\caption{SplitView PROVISOIRE}
+	\label{fig:graph1}
+\end{figure}
+
+
+
+% TODO: Luca
 
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
