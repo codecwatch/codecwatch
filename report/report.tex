@@ -84,7 +84,7 @@ machines, the platform provides high-level scripts to deploy the different roles
 locally or to a cloud provider.  Behind the scene OSCIED uses juju, a
 provisioning and deployment tool that supports major cloud providers.  We won't
 describe in detail how juju works but basically it is made of two parts: the
-internals capable of provisioning through the cloud APIs and lots of
+internals capable of interfacing with the cloud APIs and lots of
 role-specific files (charms).  The charms are in fact description files which
 tells the system how to deploy the different roles: package dependencies and how
 to startup the services.  For example the webui of OSCIED needs a web server
@@ -92,32 +92,23 @@ thus the webui charm will tell juju to install Apache with PHP and setup the web
 files in the right directory.
 
 We first began to deploy a new instance of OSCIED with all roles locally on our
-server at EPFL, each role inside its own LXC (linux container).  There was a few
-days of debugging the dependencies of the handful scripts provided by OSCIED on
-top of juju.  During this time, multiple patches were merged upstream: some
-changes were written by the author himself, some were ours.  The local
-deployment was done quite easily after these steps, then we decided to deploy in
-parallel on our Azure instances we were given by the Big Data team.
+server at EPFL, each role inside its own LXC (linux container).  This involved
+numerous bug fixes to OSCIED which where then merged upstream, see
+\url{https://github.com/ebu/OSCIED/pulls?direction=desc&page=1&sort=created&state=closed},
+\url{https://github.com/davidfischer-ch/OSCIED/pulls?direction=desc&page=1&sort=created&state=closed}
+and
+\url{https://github.com/davidfischer-ch/pytoolbox/pulls?direction=desc&page=1&sort=created&state=closed}.
 
-\subsection{Provisioning on Windows Azure}
-% juju, multiple instances, what went wrong
-In spite of the recently built-in support of juju for Windows Azure, OSCIED was
-not designed to be deployed there.  Thus we faced our first obstacle which was
-to deploy there correctly.  We couldn't use the high-level script OSCIED
-provided for local deployment, thus we had to deploy by hand with juju: deploy,
-connect roles together and expose services.  We had several problems with the
-versions of Ubuntu and juju itself, they were conflicting with OSCIED old
-versions.  The charms of OSCIED were patched multiple times to integrate the
-changes into the new version of juju and finally we were able to use it with the
-latest version of Ubuntu (14.04).
-
-After deploying on multiple instances in a single Azure account, we have
-discovered one important limitation of juju.  These is actually a lack of
-support for multiple accounts in a single juju deployment, that means it is not
-capable of connecting roles across different accounts yet.  We tried to connect
-these roles by hand but we found out this limitation would disturb how one can
-deploy OSCIED.  By lack of time, we decided to cut off our experiment over Azure
-and focused our effort on writing what we needed on our local service.
+\subsection{Provisioning on Microsoft Azure}
+As video encoding is a very CPU intensive task, we had planned to use our
+provided Azure instances to increase the number of videos and encoders we could
+demonstrate our project on. Azure support required us to use a recent version of
+Ubuntu and thus update OSCIED to account for changes in its dependencies (like
+the removal of the -sameq argument from ffmpeg). This was completed
+successfully, but unfortunately, we did not manage to properly deploy OSCIED on
+Azure on time. This is due mostly to the quite complex and fragile scripts that
+are normally used to deploy OSCIED and bugs in juju itself, like
+\url{https://bugs.launchpad.net/juju-core/+bug/1316185} which we reported ourselves.
 
 \section{Adaptations}
 % modification we made, how we changed
