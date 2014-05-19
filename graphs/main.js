@@ -24,14 +24,15 @@ var legendInfoClass = "legendInfo";
 // Specify your encoder with the git revision base link
 var mapEncoder = new Object();
 mapEncoder["https://github.com/videolan/x265"] = "x265";
-mapEncoder["https://www.google.ch/#q="] = "xTOTO";
-
-function gitUrlToEncoder(gitUrl) {
-    return mapEncoder[gitUrl];
-}
+mapEncoder["git://git.videolan.org/x264.git"] = "x264";
+mapEncoder["https://chromium.googlesource.com/webm/libvpx"] = "libvpx";
 
 // Combine a git revision with his base link
 function mapEncoGitToLink(encoder, git_commit) {
+    if (encoder == "git://git.videolan.org/x264.git")
+	return "https://git.videolan.org/?p=x264.git;a=commit;h=" + git_commit
+    if (encoder == "https://chromium.googlesource.com/webm/libvpx")
+	return encoder + "/+/" + git_commit
     return encoder + '/commit/' + git_commit;
 }
 
@@ -140,7 +141,7 @@ function generateGraph(data) {
             hGitA = $('<a/>', {
                 'href': mapEncoGitToLink(entry.git_url, entry.git_commit),
                 'title': entry.git_commit,
-            }).text(gitUrlToEncoder(entry.git_url));
+            }).text(mapEncoder[entry.git_url]);
             hInfo = $('<td/>', {'class': legendInfoClass})
                 .append(hGitA)
                 .append(' ({0})'.format(formatDate(date)))
