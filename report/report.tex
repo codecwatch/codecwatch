@@ -53,6 +53,9 @@ which provides the following functionalities:
 \begin{itemize}
 \item Do nightly encode of a standard set of video clips using the latest git
 revision of various open source encoders, at various bitrates.
+\item Since more encoded videos mean that we can do more thorough comparisons,
+  and video encoding need a lot of CPU resources, the project need to support
+  distributed encoding to an arbitrary number of machines.
 \item Display in graph forms various metrics (like
     PSNR~ \cite{psnr} or
     SSIM~ \cite{ssim})
