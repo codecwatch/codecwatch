@@ -100,7 +100,7 @@ numerous bug fixes to OSCIED which where then merged upstream, see
 and
 \cite{pytoolbox_merge1}.
 
-\subsection{Provisioning on Microsoft Azure}
+\subsection{Use of Microsoft Azure}
 As video encoding is a very CPU intensive task, we had planned to use our
 provided Azure instances to increase the number of videos and encoders we could
 demonstrate our project on. Azure support required us to use a recent version of
@@ -180,8 +180,28 @@ We included to the Webui of OSCIED the well-know visual comparator SplitView~ \c
 \end{figure}
 
 
-
 % TODO: Luca
+
+\section{Future work}
+Beside support for Windows Azure, there's a few possible improvements we could
+have done if we had had enough time and resources:
+\subsection{Chunked encoding}
+The most efficient way to parallelize video encoding is to split the source into
+chunks which each last a few seconds, encode these chunks separetly, then merge
+them. This does not negatively affect the video quality since video streaming
+requires that segments of more than a few seconds are independently decodable
+anyway (otherwise seeking to a particular point in a video would be too slow,
+since you would have to retrieve and decode everything before that point in the
+video first). CodecWatch does not implement this, although this wouldn't be too
+hard to add (ffmpeg already supports chunking a video, and tools like mkvtoolnix
+or l-smash can be used to merge it back together). This is not a critical
+problem because CodecWatch is mostly designed for benchmarking purposes and this
+is usually done by using very short clips~\cite{derf}.
+\subsection{Easier configuration of the nightly encodes}
+Right now, it's easy for an user to change the set of video that is used for
+benchmarking by uploading or deleting videos in the web interface, but there is
+no interface to change the encoding parameters used (quality, bitrate, ...),
+instead the cron_enco.py script has to be modified manually.
 
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
