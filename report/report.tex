@@ -121,7 +121,7 @@ containers, we had direct feedback of our modifications.  Multiple roles were
 affected: Orchestra, Transformer and Webui.  We needed to collect statistics
 such as the video bitrate, quality measures such as PSNR/SSIM, media source such
 as the git repository and commit, directly into the stored metadata of the media
-at encoding time (these are pushed into the MongDB of the Orchestra role after
+at encoding time (these are pushed into MongoDB on the Orchestra role after
 completion)
 
 We first had to understand the internal implementation: hierarchy of files, the
@@ -135,49 +135,50 @@ wanted.
 
 First we decided to modify the Transformer code where the encoding process is
 triggered after which the metadata are computed.  It is written in Python and
-backed up by Celery, thus the call are all asynchronous and a callback is
-called.  We modified the encoding target (ffmpeg) to collect more metadata
+backed up by Celery (a task queueing library), thus the call are all asynchronous and a callback is
+used.  We modified the encoding target (ffmpeg) to collect more metadata
 (called measures), these are computed by specialized programs of the Daala
 project.
 
 Secondly we had to modify Orchestra to accept these measures and put it as
 regular metadata into the database. Some part of the code base is shared with
 the Transformer and thus are written in Python but backed up by Flask (a light
-server designed for serving APIs).
+server handful for serving APIs).
 
 Thirdly the web interface Webui had to modified to display these informations,
 this part is written in PHP.  Columns were added in the media panel of the
 interface in order to show the results of our tests and for the final users
 so that they can compare numeric values directly.  As textual information is not
 sufficient, we wrote a small API that serves these measures directly to a
-separate interface with graphs.  We had to integrate our work with the PHP
+separate interface with graphs we wrote (see below).  We had to integrate our work with the PHP
 framework of the Webui (called CodeIgniter), that is: register new routes and
 ensure we provide a json output correctly to interpolate with Javascript (see
 the next section).
 
-\subsection{Graph representation} As describe previously, the statistics are
-only viewable though a big table. Hence, we create our own graph to display
-these data which simplify greatly how encoders behave. The graph is a plot that
-shows you the evolution of the quality of different encoder on some specific
-video called sample. These results are retrieved from the OSCIED database. The
-graph gives you the possibility to filter the result by sample, by encoder, by
-metric. Moreover, you can set interval to retrieve only encoding that have been
-done in a specific range of dates.
+\section{Interface Additions}
+At this point, the statistics were only viewable through a big table.
+Hence, we created two new pages: one with graphs to plot them and one to visually compare two videos of different configuration.
 
-The graph is coded principally in HTML, Javascript and CSS. It uses different
-Javascript plugins: Chosen~\cite{harvesthq_chosen}
-that change the default style of a multiselect in something with more hype,
-jQueryUI~\cite{jqueryui},
-TimePicker~\cite{timepicker} that
-improves the default datepicker of jQueryUI in a more detailed one (you can set
-even the second), jQuery~\cite{jquery} and
-flotcharts~\cite{flotchart} that is a jQuery plugin
-used to create plots. Futhermore, we take areweslimyet.com~\cite{areweslimyet} as inspiration.
+\subsection{Statistics interface}
+The first page contains a graph which greatly helps to understand how encoders behave.
+The graph is a plot that shows you the correlation of the quality of different encoders in term of our measures (PSNR/SSIM) with respect to the bitrate.
+These measures are done on some specific videos, we call them samples, they are retrieved from the Orchestra database through our own API.
+The interface allows you to choose what is plotted: which samples, encoders and metrics.
+Moreover, you can define time interval, during which measures were done, to show the evolution of the encoders as they are developed.
+We expect them to improve over time but there may be regression which would be easily shown with our graphs.
 
-In figure~\ref{fig:graph1}, you can see an example of such graph. The graph
-displays in the X-axis the bitrate and in the Y-axis the decibel of videos. If
-you pass your mouse over a point a tooltip appears with the exact values of the
-point.
+The interface is implemented mostly using HTML, Javascript and CSS.
+We used different plugins in Javascript:
+\begin{description}
+    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a \verb%multiselect% in something with more hype,
+    \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui} they improve the default \verb%datepicker% of jQueryUI in a more detailed one (you can set even the second)
+    \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart} They both are jQuery plugins specialized to create plots.
+\end{description}
+Furthermore, we took \href{http://areweslimyet.com}{areweslimyet} as inspiration.
+
+In figure~\ref{fig:graph1}, you can see a demonstration of our interface.
+The graph plots the bitrate as the X-axis and the noise in dB as the Y-axis.
+If you hover a point with your cursor, a nice tooltip will appear with more detailed informations for each point: such as exact bitrate, noise value and commit related information.
 
 \begin{figure}[!h] \centering
   \includegraphics[width=1\textwidth]{figures/graph1.png}
@@ -185,9 +186,21 @@ point.
   \label{fig:graph1}
 \end{figure}
 
-\subsection{SplitView} Doing a graph is a good idea to compare encoder, but actually these are only number, that why we adapted the well-know visual comparator SplitView~\cite{splitview} to our project. The principles of SplitView is quite simple, as you can see in figure~\ref{fig:split1}, you have a slider that cut literrealty the video in two parts. Each part rendered a specific video that we specify in the comboboxes above them. You can move the slide to change the ratio.
+\subsection{SplitView}
+Using graphs is a great way to visually compare encoders, but we think numbers are just not enough, we want more visual feedback of the progress.
+In that we are measuring video quality with respect to the human perceptions, thus what a better way to just display side by side these videos for a human to compare for himself?
+That's why we took the visual comparator SplitView~\cite{splitview} (developed originally by one of our member) and plug it directly into our interface.
+The principle of SplitView is simple as you can see~\ref{fig:split1}: two videos are rendered into the same area, thus they are overlapping.
+They are split in the middle by a vertical bar which can moved to unveil part of the video of your choice.
+Thus anyone can compare regions of the same sample and inspect the visual differences due to the different encoding settings.
+They are multiple samples and they can be chosen with the \verb%comboboxes% above them.
 
-Furthermore, we add a feature to SplitView. We have called it \emph{The Blind Test}. The blind test is all about the green button that we can see in figure~\ref{fig:split1}. When we click it, the green square around that contains the information about the videos becomes invisible and the two videos are swapped with probability $0.5$. Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
+Not only did we use SplitView but we contributed a new important feature: this is the \emph{Blind Test} which is enabled by the green button at the top of the videos in figure~\ref{fig:split1}.
+When this is clicked, the green box with video details becomes hidden and the two videos are swapped randomly.
+The goal of this feature is to avoid any bias due to the user knowing prior information about the two videos.
+Thus the two videos, now shuffled, must be distinguished only by their quality as the eye perceive it, and not by some prior judgement.
+Of course you can show the video details again by pressing the green button again to reveal you were right or not.
+%Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
 
 \begin{figure}[!h] \centering
   \includegraphics[width=1\textwidth]{figures/split1.png}
