@@ -173,21 +173,20 @@ over time but there may be regressions which would be easily tracked down with
 our graphs.
 
 The interface is implemented mostly using HTML, Javascript and CSS.  We used
-different plugins in Javascript:
+the following Javascript modules:
 \begin{description}
-    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a
-      \verb%multiselect% in something with more visually attractive features,
-    \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui} they improve
-      the default \verb%datepicker% of jQueryUI in a more detailed one (you can set
+    \item[HarvestHQ]\cite{harvesthq_chosen} Improve visually and functionally the \verb%<select>% html tag.
+    \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui}
+      Replace the default \verb%datepicker% of jQueryUI with a more detailed one (you can set
       even the second)
-    \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart} They both are
-      jQuery plugins specialized to create plots.
+    \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart}
+      jQuery plugin used to create plots.
 \end{description}
 Furthermore, we used some design ideas from
 \href{http://areweslimyet.com}{areweslimyet}, as a source of inspiration.
 
 In figure~\ref{fig:graph1}, you can see a demonstration of our interface.  The
-graph plots the bitrate as the X-axis and the noise in dB as the Y-axis.  If you
+graph plots the bitrate as the X-axis and the quality in dB as the Y-axis.  If you
 hover a point with your cursor, a nice tooltip will appear with more detailed
 informations for each point: such as exact bitrate, noise value and commit
 related information.
@@ -199,29 +198,27 @@ related information.
 \end{figure}
 
 \subsection{SplitView}
-Using graphs is a great way to visually compare encoders, but we think numbers
-are just not enough, we want more visual feedback of the progress.  In that we
-are measuring video quality with respect to the human perceptions, thus what a
-better way to just display side by side these videos for a human to compare for
-himself?  That's why we took the visual comparator SplitView~\cite{splitview}
-(developed originally by one of our member) and plug it directly into our
+While graphs are great to track the progress of encoders, the metrics used are
+only an approximation of the human visual system, thus it makes sense to also
+provide a way to visually compare the output of the encoders.
+This is why we took the visual comparator SplitView~\cite{splitview}
+(originally developed by one of our member) and adapted it to fit into our
 interface.  The principle of SplitView is simple as you can
 see~\ref{fig:split1}: two videos are rendered into the same area, thus they are
 overlapping.  They are split in the middle by a vertical bar which can moved to
 unveil part of the video of your choice.  Thus anyone can compare regions of the
 same sample and inspect the visual differences due to the different encoding
-settings.  They are multiple samples and they can be chosen with the
-\verb%comboboxes% above them.
+settings. Every sample encoded by OSCIED can be watched.
 
-Not only did we use SplitView but we contributed a new important feature: this
-is the \emph{Blind Test} which is enabled by the green button at the top of the
-videos in figure~\ref{fig:split1}.  When this is clicked, the green box with
-video details becomes hidden and the two videos are swapped randomly.  The goal
+While adapting SplitView for our use, we also added an important feature: the
+\emph{Blind Test} mode which is enabled by the green button at the top of the
+videos in figure~\ref{fig:split1}.  When it is clicked, the green box with
+informations on the video is hidden and the two videos are swapped randomly. The goal
 of this feature is to avoid any bias due to the user knowing prior information
 about the two videos.  Thus the two videos, now shuffled, must be distinguished
 only by their quality as the eye perceive it, and not by some prior judgement.
 Of course you can show the video details again by pressing the green button
-again to reveal you were right or not.
+again to reveal if you were right or not.
 %Thanks to this feature you loose
 %completely the notion of which would be the best one based on his intrinsic
 %value. When you reclick on the blind test button, the solution reappears.
@@ -250,7 +247,7 @@ and this is usually done by using very short clips~\cite{derf} and thus chunking
 would strongly defeat the purpose of most encoding technics that leverage video
 continuity to decrease video size.
 \subsection{Easier configuration of the nightly encodes}
-Right now, it's easy for an user to change the set of videos that is used for
+Right now, it's easy for an user to change the set of videos that are used for
 benchmarking by uploading or deleting videos in the web interface, but there is
 no interface to change the encoding parameters used such as quality/bitrate,
 instead the \verb%cron_enco.py% script has to be modified manually, this
@@ -270,7 +267,10 @@ CoreOS~\cite{coreos} from scratch but keep the client side (the metrics graphs
 and SplitView).
 \appendix
 \section{Installation guide notes}
-OSCIED was tested on Ubuntu 14.04 with \verb%1.18.2%. One should read the deployment guide\cite{oscied_deploy} (but with our repository) and take a look at the thesis\cite{df_thesis}. We deployed locally in LXC and the following steps should help anyone to install our system:
+OSCIED was tested on Ubuntu 14.04 with juju \verb%1.18.2%. One should read the
+deployment guide\cite{oscied_deploy} (but with our repository) and take a look
+at the thesis\cite{df_thesis}. We deployed locally in LXC and the following
+steps should help anyone to install our system:
 \begin{verbatim}
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:juju/stable # juju repo
@@ -290,7 +290,8 @@ git clone https://github.com/codecwatch/OSCIED
 # y for web-ui
 # n for haproxy
 # y for everything until "Initialize orchestra?"
-# Then wait for everything to be deployed (use 'juju status' to see if anything is still pending)
+# Then wait for everything to be deployed (use 'juju status'
+# to see if anything is still pending)
 # Then y
 \end{verbatim}
 
