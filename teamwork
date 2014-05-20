@@ -103,3 +103,11 @@ Design integration with git, compilation and last APIs tweaks
 Axel/Guillaume: 2h change APIs + implement cron (16.05)
 Last API change, according to new specs, fix bugs and test
 Implement cronjob in orchestra charm for deployment
+
+Axel: 3h webui/transform adjustement (17.05)
+Integration of graph, auto-deploy on git push, minor design
+design how to integrate git and daala binaries for measures
+Add install hook to build+install daala tools
+
+Axel: 2h write report (17-19.05)
+Write report
