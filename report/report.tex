@@ -219,7 +219,12 @@ instead the cron\_enco.py script has to be modified manually.
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
 % what we did is useful, blabla
-
+We managed to produce a useful proof of concept for what a benchmarking platform
+for encoders should look like. While the use of OSCIED allowed us to avoid
+having to design our own distributed encoding system, it turned out to be harder
+to adapt to our needs that anticipated. Thus, it might make sense for future
+work to rebuild the server side from scratch using modern deployment tools like
+CoreOS~\cite{coreos} from scratch but keep the client side (the metrics graphs and SplitView).
 \appendix
 \bibliography{report}{}
 \bibliographystyle{plain}
