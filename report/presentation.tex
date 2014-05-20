@@ -5,15 +5,32 @@
 
 \beamertemplatenavigationsymbolsempty
 
-\title{Big Data\\Project Presentation}
+\title{CodecWatch: a benchmarking platform for video encoders}
 \author{Axel Angel \& Luca La Spada \& Guillaume Martres}
 
 \begin{document}
+
+\frame{\titlepage}
+
 \begin{frame}
-    \begin{itemize}
-        \item OSCIED
-        \item CodecWatch
-    \end{itemize}
+  \frametitle{Background}
+  \begin{itemize}
+    \item \textbf{Video encoder}: try to provide the greatest visual quality at acceptable
+      file size and encoding speed
+    \item New video codec standards emerging (HEVC, VP9, Daala)
+    \item Need to assess and track quality of encoders
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{CodecWatch}
+  \begin{itemize}
+    \item Fetch various encoders(x264, libvpx, ...) from git nightly
+    \item Encode a standard set of videos with them nightly
+    \item Compute metrics on the encoded videos(PSNR, SSIM, ...) and display
+      them on graphs
+    \item Visual in-browser comparaisons of videos.
+  \end{itemize}
 \end{frame}
 
 \end{document}
