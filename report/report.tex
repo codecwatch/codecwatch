@@ -210,29 +210,29 @@ Of course you can show the video details again by pressing the green button agai
 
 \section{Future work}
 Beside support for Windows Azure, there's a few possible improvements we could
-have done if we had had enough time and resources:
+have done if we had had enough time and resources (eg: more people):
 \subsection{Chunked encoding}
 The most efficient way to parallelize video encoding is to split the source into
 chunks which each last a few seconds, encode these chunks separetly, then merge
 them. This does not negatively affect the video quality since video streaming
 requires that segments of more than a few seconds are independently decodable
-anyway (otherwise seeking to a particular point in a video would be too slow,
+anyway\footnote{otherwise seeking to a particular point in a video would be too slow,
 since you would have to retrieve and decode everything before that point in the
-video first). CodecWatch does not implement this, although this wouldn't be too
-hard to add (ffmpeg already supports chunking a video, and tools like mkvtoolnix
-or l-smash can be used to merge it back together). This is not a critical
+video first}. CodecWatch does not implement this, although this wouldn't be too
+hard to add\footnote{ffmpeg already supports chunking a video, and tools like mkvtoolnix
+or l-smash can be used to merge it back together}. This is not a critical
 problem because CodecWatch is mostly designed for benchmarking purposes and this
-is usually done by using very short clips~\cite{derf}.
+is usually done by using very short clips~\cite{derf} and thus chunking would strongly defeat the purpose of most encoding technics that leverage video continuity to decrease video size.
 \subsection{Easier configuration of the nightly encodes}
-Right now, it's easy for an user to change the set of video that is used for
+Right now, it's easy for an user to change the set of videos that is used for
 benchmarking by uploading or deleting videos in the web interface, but there is
-no interface to change the encoding parameters used (quality, bitrate, ...),
-instead the cron\_enco.py script has to be modified manually.
+no interface to change the encoding parameters used such as quality/bitrate,
+instead the \verb%cron_enco.py% script has to be modified manually, this requires direct access to the Orchestra machine. The modification wouldn't be too hard to allow basic editing but we lacked the time to implement a well integrated solution.
 
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
 % what we did is useful, blabla
-We managed to produce a useful proof of concept for what a benchmarking platform
+We managed to produce a useful proof of concept of what a benchmarking platform
 for encoders should look like. While the use of OSCIED allowed us to avoid
 having to design our own distributed encoding system, it turned out to be harder
 to adapt to our needs that anticipated. Thus, it might make sense for future
