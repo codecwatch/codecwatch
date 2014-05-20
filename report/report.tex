@@ -269,6 +269,31 @@ work to rebuild the server side from scratch using modern deployment tools like
 CoreOS~\cite{coreos} from scratch but keep the client side (the metrics graphs
 and SplitView).
 \appendix
+\section{Installation guide notes}
+OSCIED was tested on Ubuntu 14.04 with \verb%1.18.2%. One should read the deployment guide\cite{oscied_deploy} (but with our repository) and take a look at the thesis\cite{df_thesis}. We deployed locally in LXC and the following steps should help anyone to install our system:
+\begin{verbatim}
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:juju/stable # juju repo
+
+juju init # init config
+juju switch local # switch to local instead of amazon deploy
+juju bootstrap
+git clone https://github.com/codecwatch/OSCIED
+# suppose OSCIED is installed (following official guide):
+(cd OSCIED/scripts; sh menu.sh install) # if not already done
+(cd OSCIED/scripts; sh menu.sh deploy) # pick: Local
+# y for first install of charms
+# y for certificate per scenario
+# y for transform (1 instance)
+# y for publisher (1 instance)
+# y for orchestra
+# y for web-ui
+# n for haproxy
+# y for everything until "Initialize orchestra?"
+# Then wait for everything to be deployed (use 'juju status' to see if anything is still pending)
+# Then y
+\end{verbatim}
+
 \bibliography{report}{}
 \bibliographystyle{plain}
 
