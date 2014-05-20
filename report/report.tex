@@ -163,7 +163,7 @@ video called sample. These results are retrieved from the OSCIED database. The
 graph gives you the possibility to filter the result by sample, by encoder, by
 metric. Moreover, you can set interval to retrieve only encoding that have been
 done in a specific range of dates.
-     
+
 The graph is coded principally in HTML, Javascript and CSS. It uses different
 Javascript plugins: Chosen~\cite{harvesthq_chosen}
 that change the default style of a multiselect in something with more hype,
@@ -172,41 +172,26 @@ TimePicker~\cite{timepicker} that
 improves the default datepicker of jQueryUI in a more detailed one (you can set
 even the second), jQuery~\cite{jquery} and
 flotcharts~\cite{flotchart} that is a jQuery plugin
-used to create plots. Futhermore, we use
-areweslimyet.com~\cite{areweslimyet} as inspiration.
-     
+used to create plots. Futhermore, we take areweslimyet.com~\cite{areweslimyet} as inspiration.
+
 In figure~\ref{fig:graph1}, you can see an example of such graph. The graph
 displays in the X-axis the bitrate and in the Y-axis the decibel of videos. If
 you pass your mouse over a point a tooltip appears with the exact values of the
 point.
-     
+
 \begin{figure}[!h] \centering
   \includegraphics[width=1\textwidth]{figures/graph1.png}
   \caption{Example of graph rendering}
   \label{fig:graph1}
 \end{figure}
-     
-\subsection{SplitView} Doing a graph is a good idea to compare encoder, but
-actually these are only number, that why we adapted the well-know visual
-comparator SplitView~\cite{splitview} to our
-project. The principles of SplitView is quite simple. As you can see in
-figure~\ref{fig:graph2}
-     
-You have a video-player that displays on one half one half of a video and the
-other half displays half of another video. A slider gives you the possibility to
-modify the ratio visible for each video.
-     
-Furthermore, we add a feature to SplitView. We have called it \emph{The Blind
-Test}. The blind test is all about the green button that we can see in
-figure~\ref{fig:blindtest}. When we click it, the green square around the
-information about the videos becomes invisible and the two videos are swap with
-probability $0.5$. Thanks to this feature you loose completely the notion of
-which would be the best one based on his intrinsic value. When you reclick on
-the blind test button, the solution reappears.
-     
+
+\subsection{SplitView} Doing a graph is a good idea to compare encoder, but actually these are only number, that why we adapted the well-know visual comparator SplitView~\cite{splitview} to our project. The principles of SplitView is quite simple, as you can see in figure~\ref{fig:split1}, you have a slider that cut literrealty the video in two parts. Each part rendered a specific video that we specify in the comboboxes above them. You can move the slide to change the ratio.
+
+Furthermore, we add a feature to SplitView. We have called it \emph{The Blind Test}. The blind test is all about the green button that we can see in figure~\ref{fig:split1}. When we click it, the green square around that contains the information about the videos becomes invisible and the two videos are swapped with probability $0.5$. Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
+
 \begin{figure}[!h] \centering
-  \includegraphics[width=1\textwidth]{figures/graph1.png}
-  \caption{SplitView PROVISOIRE}
+  \includegraphics[width=1\textwidth]{figures/split1.png}
+  \caption{SplitView}
   \label{fig:graph2}
 \end{figure}
 
