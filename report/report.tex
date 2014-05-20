@@ -157,24 +157,24 @@ the next section).
 
 \section{Interface Additions}
 At this point, the statistics were only viewable through a big table.
-Hence, we created two new pages: one with graphs to plot them and one to visually compare two videos of different configuration.
+Hence, we created two new pages: one with graphs to plot them and one to visually compare two videos of different configurations.
 
 \subsection{Statistics interface}
 The first page contains a graph which greatly helps to understand how encoders behave.
 The graph is a plot that shows you the correlation of the quality of different encoders in term of our measures (PSNR/SSIM) with respect to the bitrate.
-These measures are done on some specific videos, we call them samples, they are retrieved from the Orchestra database through our own API.
+These measures are retrieved from the Orchestra database through our own API, they are made on specific videos (called samples).
 The interface allows you to choose what is plotted: which samples, encoders and metrics.
 Moreover, you can define time interval, during which measures were done, to show the evolution of the encoders as they are developed.
-We expect them to improve over time but there may be regression which would be easily shown with our graphs.
+We expect them to improve over time but there may be regressions which would be easily tracked down with our graphs.
 
 The interface is implemented mostly using HTML, Javascript and CSS.
 We used different plugins in Javascript:
 \begin{description}
-    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a \verb%multiselect% in something with more hype,
+    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a \verb%multiselect% in something with more visually attractive features,
     \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui} they improve the default \verb%datepicker% of jQueryUI in a more detailed one (you can set even the second)
     \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart} They both are jQuery plugins specialized to create plots.
 \end{description}
-Furthermore, we took \href{http://areweslimyet.com}{areweslimyet} as inspiration.
+Furthermore, we used some design ideas from \href{http://areweslimyet.com}{areweslimyet}, as a source of inspiration.
 
 In figure~\ref{fig:graph1}, you can see a demonstration of our interface.
 The graph plots the bitrate as the X-axis and the noise in dB as the Y-axis.
