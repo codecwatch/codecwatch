@@ -135,10 +135,10 @@ wanted.
 
 First we decided to modify the Transformer code where the encoding process is
 triggered after which the metadata are computed.  It is written in Python and
-backed up by Celery (a task queueing library), thus the call are all asynchronous and a callback is
-used.  We modified the encoding target (ffmpeg) to collect more metadata
-(called measures), these are computed by specialized programs of the Daala
-project.
+backed up by Celery (a task queueing library), thus the call are all
+asynchronous and a callback is used.  We modified the encoding target (ffmpeg)
+to collect more metadata (called measures), these are computed by specialized
+programs of the Daala project.
 
 Secondly we had to modify Orchestra to accept these measures and put it as
 regular metadata into the database. Some part of the code base is shared with
@@ -147,38 +147,50 @@ server handful for serving APIs).
 
 Thirdly the web interface Webui had to modified to display these informations,
 this part is written in PHP.  Columns were added in the media panel of the
-interface in order to show the results of our tests and for the final users
-so that they can compare numeric values directly.  As textual information is not
+interface in order to show the results of our tests and for the final users so
+that they can compare numeric values directly.  As textual information is not
 sufficient, we wrote a small API that serves these measures directly to a
-separate interface with graphs we wrote (see below).  We had to integrate our work with the PHP
-framework of the Webui (called CodeIgniter), that is: register new routes and
-ensure we provide a json output correctly to interpolate with Javascript (see
-the next section).
+separate interface with graphs we wrote (see below).  We had to integrate our
+work with the PHP framework of the Webui (called CodeIgniter), that is: register
+new routes and ensure we provide a json output correctly to interpolate with
+Javascript (see the next section).
 
 \section{Interface Additions}
-At this point, the statistics were only viewable through a big table.
-Hence, we created two new pages: one with graphs to plot them and one to visually compare two videos of different configurations.
+At this point, the statistics were only viewable through a big table.  Hence, we
+created two new pages: one with graphs to plot them and one to visually compare
+two videos of different configurations.
 
 \subsection{Statistics interface}
-The first page contains a graph which greatly helps to understand how encoders behave.
-The graph is a plot that shows you the correlation of the quality of different encoders in term of our measures (PSNR/SSIM) with respect to the bitrate.
-These measures are retrieved from the Orchestra database through our own API, they are made on specific videos (called samples).
-The interface allows you to choose what is plotted: which samples, encoders and metrics.
-Moreover, you can define time interval, during which measures were done, to show the evolution of the encoders as they are developed.
-We expect them to improve over time but there may be regressions which would be easily tracked down with our graphs.
+The first page contains a graph which greatly helps to understand how encoders
+behave.  The graph is a plot that shows you the correlation of the quality of
+different encoders in term of our measures (PSNR/SSIM) with respect to the
+bitrate.  These measures are retrieved from the Orchestra database through our
+own API, they are made on specific videos (called samples).  The interface
+allows you to choose what is plotted: which samples, encoders and metrics.
+Moreover, you can define time interval, during which measures were done, to show
+the evolution of the encoders as they are developed.  We expect them to improve
+over time but there may be regressions which would be easily tracked down with
+our graphs.
 
-The interface is implemented mostly using HTML, Javascript and CSS.
-We used different plugins in Javascript:
+The interface is implemented mostly using HTML, Javascript and CSS.  We used
+different plugins in Javascript:
 \begin{description}
-    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a \verb%multiselect% in something with more visually attractive features,
-    \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui} they improve the default \verb%datepicker% of jQueryUI in a more detailed one (you can set even the second)
-    \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart} They both are jQuery plugins specialized to create plots.
+    \item[HarvestHQ]\cite{harvesthq_chosen} it changes the default style of a
+      \verb%multiselect% in something with more visually attractive features,
+    \item[jQueryUI, TimePicker]\cite{timepicker} \cite{jqueryui} they improve
+      the default \verb%datepicker% of jQueryUI in a more detailed one (you can set
+      even the second)
+    \item[jQuery, flotcharts]\cite{jquery} ~\cite{flotchart} They both are
+      jQuery plugins specialized to create plots.
 \end{description}
-Furthermore, we used some design ideas from \href{http://areweslimyet.com}{areweslimyet}, as a source of inspiration.
+Furthermore, we used some design ideas from
+\href{http://areweslimyet.com}{areweslimyet}, as a source of inspiration.
 
-In figure~\ref{fig:graph1}, you can see a demonstration of our interface.
-The graph plots the bitrate as the X-axis and the noise in dB as the Y-axis.
-If you hover a point with your cursor, a nice tooltip will appear with more detailed informations for each point: such as exact bitrate, noise value and commit related information.
+In figure~\ref{fig:graph1}, you can see a demonstration of our interface.  The
+graph plots the bitrate as the X-axis and the noise in dB as the Y-axis.  If you
+hover a point with your cursor, a nice tooltip will appear with more detailed
+informations for each point: such as exact bitrate, noise value and commit
+related information.
 
 \begin{figure}[!h] \centering
   \includegraphics[width=1\textwidth]{figures/graph1.png}
@@ -187,20 +199,32 @@ If you hover a point with your cursor, a nice tooltip will appear with more deta
 \end{figure}
 
 \subsection{SplitView}
-Using graphs is a great way to visually compare encoders, but we think numbers are just not enough, we want more visual feedback of the progress.
-In that we are measuring video quality with respect to the human perceptions, thus what a better way to just display side by side these videos for a human to compare for himself?
-That's why we took the visual comparator SplitView~\cite{splitview} (developed originally by one of our member) and plug it directly into our interface.
-The principle of SplitView is simple as you can see~\ref{fig:split1}: two videos are rendered into the same area, thus they are overlapping.
-They are split in the middle by a vertical bar which can moved to unveil part of the video of your choice.
-Thus anyone can compare regions of the same sample and inspect the visual differences due to the different encoding settings.
-They are multiple samples and they can be chosen with the \verb%comboboxes% above them.
+Using graphs is a great way to visually compare encoders, but we think numbers
+are just not enough, we want more visual feedback of the progress.  In that we
+are measuring video quality with respect to the human perceptions, thus what a
+better way to just display side by side these videos for a human to compare for
+himself?  That's why we took the visual comparator SplitView~\cite{splitview}
+(developed originally by one of our member) and plug it directly into our
+interface.  The principle of SplitView is simple as you can
+see~\ref{fig:split1}: two videos are rendered into the same area, thus they are
+overlapping.  They are split in the middle by a vertical bar which can moved to
+unveil part of the video of your choice.  Thus anyone can compare regions of the
+same sample and inspect the visual differences due to the different encoding
+settings.  They are multiple samples and they can be chosen with the
+\verb%comboboxes% above them.
 
-Not only did we use SplitView but we contributed a new important feature: this is the \emph{Blind Test} which is enabled by the green button at the top of the videos in figure~\ref{fig:split1}.
-When this is clicked, the green box with video details becomes hidden and the two videos are swapped randomly.
-The goal of this feature is to avoid any bias due to the user knowing prior information about the two videos.
-Thus the two videos, now shuffled, must be distinguished only by their quality as the eye perceive it, and not by some prior judgement.
-Of course you can show the video details again by pressing the green button again to reveal you were right or not.
-%Thanks to this feature you loose completely the notion of which would be the best one based on his intrinsic value. When you reclick on the blind test button, the solution reappears.
+Not only did we use SplitView but we contributed a new important feature: this
+is the \emph{Blind Test} which is enabled by the green button at the top of the
+videos in figure~\ref{fig:split1}.  When this is clicked, the green box with
+video details becomes hidden and the two videos are swapped randomly.  The goal
+of this feature is to avoid any bias due to the user knowing prior information
+about the two videos.  Thus the two videos, now shuffled, must be distinguished
+only by their quality as the eye perceive it, and not by some prior judgement.
+Of course you can show the video details again by pressing the green button
+again to reveal you were right or not.
+%Thanks to this feature you loose
+%completely the notion of which would be the best one based on his intrinsic
+%value. When you reclick on the blind test button, the solution reappears.
 
 \begin{figure}[!h] \centering
   \includegraphics[width=1\textwidth]{figures/split1.png}
@@ -216,18 +240,23 @@ The most efficient way to parallelize video encoding is to split the source into
 chunks which each last a few seconds, encode these chunks separetly, then merge
 them. This does not negatively affect the video quality since video streaming
 requires that segments of more than a few seconds are independently decodable
-anyway\footnote{otherwise seeking to a particular point in a video would be too slow,
-since you would have to retrieve and decode everything before that point in the
-video first}. CodecWatch does not implement this, although this wouldn't be too
-hard to add\footnote{ffmpeg already supports chunking a video, and tools like mkvtoolnix
-or l-smash can be used to merge it back together}. This is not a critical
-problem because CodecWatch is mostly designed for benchmarking purposes and this
-is usually done by using very short clips~\cite{derf} and thus chunking would strongly defeat the purpose of most encoding technics that leverage video continuity to decrease video size.
+anyway\footnote{otherwise seeking to a particular point in a video would be too
+slow, since you would have to retrieve and decode everything before that point
+in the video first}. CodecWatch does not implement this, although this wouldn't
+be too hard to add\footnote{ffmpeg already supports chunking a video, and tools
+like mkvtoolnix or l-smash can be used to merge it back together}. This is not a
+critical problem because CodecWatch is mostly designed for benchmarking purposes
+and this is usually done by using very short clips~\cite{derf} and thus chunking
+would strongly defeat the purpose of most encoding technics that leverage video
+continuity to decrease video size.
 \subsection{Easier configuration of the nightly encodes}
 Right now, it's easy for an user to change the set of videos that is used for
 benchmarking by uploading or deleting videos in the web interface, but there is
 no interface to change the encoding parameters used such as quality/bitrate,
-instead the \verb%cron_enco.py% script has to be modified manually, this requires direct access to the Orchestra machine. The modification wouldn't be too hard to allow basic editing but we lacked the time to implement a well integrated solution.
+instead the \verb%cron_enco.py% script has to be modified manually, this
+requires direct access to the Orchestra machine. The modification wouldn't be
+too hard to allow basic editing but we lacked the time to implement a well
+integrated solution.
 
 \section{Conclusion}
 % what we made, sumup, how can be used and continued, improved
@@ -237,7 +266,8 @@ for encoders should look like. While the use of OSCIED allowed us to avoid
 having to design our own distributed encoding system, it turned out to be harder
 to adapt to our needs that anticipated. Thus, it might make sense for future
 work to rebuild the server side from scratch using modern deployment tools like
-CoreOS~\cite{coreos} from scratch but keep the client side (the metrics graphs and SplitView).
+CoreOS~\cite{coreos} from scratch but keep the client side (the metrics graphs
+and SplitView).
 \appendix
 \bibliography{report}{}
 \bibliographystyle{plain}
